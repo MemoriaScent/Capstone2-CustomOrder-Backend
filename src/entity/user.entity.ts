@@ -1,6 +1,7 @@
 import { Column } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-export class UserEntity {
+import { DefaultEntity } from './default.entity';
+export class UserEntity extends DefaultEntity {
   @ApiProperty({
     example: '1234@memoria.kr',
     description: '로그인 메일',

@@ -1,6 +1,6 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserEntity } from './user.entity';
+import { UserEntity } from '../entity/user.entity';
 import { Response } from 'express';
 import { ApiOperation } from '@nestjs/swagger';
 

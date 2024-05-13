@@ -29,13 +29,14 @@ export class SignupService {
   async create(userDto: CreateUserRequest): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
     // 비밀번호 재확인
-    if (userDto.pw == userDto.pwCheck) {
+    if (userDto.pw != userDto.pwCheck) {
       response.status = 404;
+      response.token = '비밀번호 오류';
       return response;
     }
     const result: CreateUserRequest = await this.userRepository.save(userDto);
     response.status = result ? 200 : 404;
-    response.token = result ? 'token' : null;
+    response.token = result ? 'token' : '오류';
     console.log(response);
     return response;
   }

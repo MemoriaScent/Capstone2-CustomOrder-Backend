@@ -8,5 +8,6 @@ import { SignupController } from './signup.controller';
   imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [SignupController],
   providers: [SignupService],
+  exports: [TypeOrmModule],
 })
 export class SignupModule {}

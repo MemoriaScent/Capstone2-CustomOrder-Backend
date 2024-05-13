@@ -13,7 +13,7 @@ export class UserService {
   async login(body: UserEntity) {
     const result = { status: undefined, data: undefined };
     const loginState: Promise<UserEntity> = this.userRepository.findOne({
-      where: { email: body.email, password: body.password },
+      where: { email: body.email, pw: body.pw },
     });
     //로그인 성공
     if (loginState) {

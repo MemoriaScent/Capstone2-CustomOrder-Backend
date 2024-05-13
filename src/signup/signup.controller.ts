@@ -6,7 +6,7 @@ import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 
 @ApiTags('사용자 API')
-@Controller('user')
+@Controller('signup')
 export class SignupController {
   constructor(private userService: SignupService) {}
 

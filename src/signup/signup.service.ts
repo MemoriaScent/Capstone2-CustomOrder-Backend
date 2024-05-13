@@ -17,11 +17,12 @@ export class SignupService {
     emailRequest: DuplicationEmailRequest,
   ): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
-    // 이메을를 이용한 기존 사용자 찾기
+    // 이메일를 이용한 기존 사용자 찾기
     const user: UserEntity = await this.userRepository.findOneBy({
       email: emailRequest.email,
     });
-    // 기존 사용자 중 해당 이메일의 존재 여부에 따른 이메일 미중복 확인 실패/성공
+    // 이메일 중복 확인
+    //응답별 data 수정 필요
     response.status = user ? 404 : 200;
     return response;
   }
@@ -31,12 +32,12 @@ export class SignupService {
     // 비밀번호 재확인
     if (userDto.pw != userDto.pwCheck) {
       response.status = 404;
-      response.token = '비밀번호 오류';
+      response.data = { msg: '비밀번호 오류' };
       return response;
     }
     const result: CreateUserRequest = await this.userRepository.save(userDto);
     response.status = result ? 200 : 404;
-    response.token = result ? 'token' : '오류';
+    response.data = result ? 'token' : { msg: '오류' };
     console.log(response);
     return response;
   }

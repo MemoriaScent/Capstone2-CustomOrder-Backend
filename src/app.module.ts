@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { LoginModule } from './login/login.module';
-import { RegisterModule } from './Register/register.module';
+import { RegisterModule } from './register/register.module';
 import { UserEntity } from './entity/user.entity';
 
 //import process from 'process';

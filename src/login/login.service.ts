@@ -11,15 +11,13 @@ export class LoginService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  //email,pw 로그인 성공 여부 확인
   async login(body) {
     const response: DefaultResponseDto = new DefaultResponseDto();
-    const pw = body.password;
     const loginState = await this.userRepository.findOne({
       where: { email: body.email, pw: body.password },
     });
     //로그인 성공
-    console.log(loginState);
-    console.log(pw);
     if (loginState) {
       response.status = 200;
       response.data = {

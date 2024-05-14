@@ -3,19 +3,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { SigninModule } from './signin/signin.module';
-import { SignupModule } from './signup/signup.module';
+import { LoginModule } from './login/login.module';
+import { RegisterModule } from './Register/register.module';
 import { UserEntity } from './entity/user.entity';
-import { AuthService } from './auth/auth.service';
-import { AuthController } from './auth/auth.controller';
-import { AuthModule } from './auth/auth.module';
 
 //import process from 'process';
 
 @Module({
   imports: [
-    SigninModule,
-    SignupModule,
+    LoginModule,
+    RegisterModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -30,9 +27,8 @@ import { AuthModule } from './auth/auth.module';
       entities: [UserEntity],
       synchronize: true,
     }),
-    AuthModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -1,14 +1,14 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SignupService } from './signup.service';
+import { RegisterService } from './register.service';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 
 @ApiTags('사용자 API')
 @Controller('user')
-export class SignupController {
-  constructor(private userService: SignupService) {}
+export class RegisterController {
+  constructor(private userService: RegisterService) {}
 
   @Post('/signup')
   @ApiOperation({ summary: '회원 가입', description: '회원을 가입합니다.' })

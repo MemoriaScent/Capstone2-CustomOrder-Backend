@@ -7,7 +7,7 @@ import { DefaultResponseDto } from '../dto/response/default.response';
 import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
 
 @Injectable()
-export class SignupService {
+export class RegisterService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,

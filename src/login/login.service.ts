@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { DefaultResponseDto } from '../dto/response/default.response';
 
 @Injectable()
-export class SigninService {
+export class LoginService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
@@ -13,13 +13,18 @@ export class SigninService {
 
   async login(body) {
     const response: DefaultResponseDto = new DefaultResponseDto();
+    const pw = body.password;
     const loginState = await this.userRepository.findOne({
-      where: { email: body.email, pw: body.pw },
+      where: { email: body.email, pw: body.password },
     });
     //로그인 성공
+    console.log(loginState);
+    console.log(pw);
     if (loginState) {
       response.status = 200;
-      response.data = { token: 'jwt 전달 예정입니다' };
+      response.data = {
+        token: 'jwt 전달 예정입니다' + body.email + body.password,
+      };
       return response;
     }
     //로그인 실패

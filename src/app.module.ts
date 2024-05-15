@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LoginModule } from './login/login.module';
 import { RegisterModule } from './register/register.module';
 import { UserEntity } from './entity/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 //import process from 'process';
 
@@ -27,6 +28,7 @@ import { UserEntity } from './entity/user.entity';
       entities: [UserEntity],
       synchronize: true,
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -23,6 +23,7 @@ export class AuthController {
     const user = await this.registerService.userFind(body.email);
 
     //사용자 정보 없음
+
     if (!user) {
       throw new UnprocessableEntityException('이메일이 없습니다.');
     }

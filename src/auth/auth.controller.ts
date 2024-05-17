@@ -5,16 +5,13 @@ import {
   Res,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { LoginService } from '../login/login.service';
+import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
-import { compare } from 'bcrypt';
-
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly loginService: LoginService,
+    private readonly registerService: UserService,
     private readonly authService: AuthService,
   ) {}
 
@@ -23,7 +20,7 @@ export class AuthController {
     @Body() body: { email: string; pw: string },
     @Res() response: Response,
   ) {
-    const user = await this.loginService.userFind(body.email);
+    const user = await this.registerService.userFind(body.email);
 
     //사용자 정보 없음
     if (!user) {

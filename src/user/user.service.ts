@@ -7,11 +7,19 @@ import { DefaultResponseDto } from '../dto/response/default.response';
 import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
 
 @Injectable()
-export class RegisterService {
+export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
+
+  async userFind(body) {
+    const loginState = await this.userRepository.findOne({
+      where: { email: body },
+    });
+
+    return loginState;
+  }
 
   async emailCheck(
     emailRequest: DuplicationEmailRequest,

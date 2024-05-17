@@ -7,13 +7,16 @@ import { LoginModule } from './login/login.module';
 import { RegisterModule } from './register/register.module';
 import { UserEntity } from './entity/user.entity';
 import { AuthModule } from './auth/auth.module';
-
+import { OrderModule } from './order/order.module';
+import { OrderEntity } from './entity/order.entity';
+import { DefaultEntity } from './entity/default.entity';
 //import process from 'process';
 
 @Module({
   imports: [
     LoginModule,
     RegisterModule,
+    OrderModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -25,7 +28,7 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [UserEntity],
+      entities: [DefaultEntity, UserEntity, OrderEntity],
       synchronize: true,
     }),
     AuthModule,

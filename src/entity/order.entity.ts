@@ -1,9 +1,10 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
+import { UserEntity } from './user.entity';
 
 @Entity()
-export class UserEntity extends DefaultEntity {
+export class OrderEntity extends DefaultEntity {
   @ApiProperty({
     example: '1',
     description: '주문한 사용자의 id값',

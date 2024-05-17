@@ -3,8 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { LoginModule } from './login/login.module';
-import { RegisterModule } from './register/register.module';
+import { UserModule } from './user/user.module';
 import { UserEntity } from './entity/user.entity';
 import { AuthModule } from './auth/auth.module';
 
@@ -12,8 +11,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    LoginModule,
-    RegisterModule,
+    UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

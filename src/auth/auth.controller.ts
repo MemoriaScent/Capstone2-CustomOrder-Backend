@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  NotFoundException,
   Post,
   Res,
   UnprocessableEntityException,
@@ -8,14 +9,18 @@ import {
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
   ) {}
-  //주석
+
+  //사용자 로그인
   @Post('login')
+  @ApiOperation({ summary: '로그인' })
+  @ApiResponse({ status: 200, description: '로그인성공' })
   async login(
     @Body() body: { email: string; pw: string },
     @Res() response: Response,
@@ -24,7 +29,7 @@ export class AuthController {
 
     //사용자 정보 없음
     if (!user) {
-      throw new UnprocessableEntityException('이메일이 없습니다.');
+      throw new NotFoundException('이메일이 없습니다.');
     }
 
     const isAuth = await (body.pw === user.pw);
@@ -36,6 +41,6 @@ export class AuthController {
 
     const jwt = this.authService.getAccessToken({ user });
 
-    return response.status(200).json(jwt);
+    return response.status(200).json({ message: '로그인 성공', token: jwt });
   }
 }

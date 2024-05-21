@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entity/user.entity';
 import { CreateUserRequest } from '../dto/request/create-user.request';
@@ -18,6 +18,7 @@ export class UserService {
     const loginState = await this.userRepository.findOne({
       where: { email: body },
     });
+
     return loginState;
   }
 
@@ -32,7 +33,7 @@ export class UserService {
     });
     // 이메일 중복 확인
     //응답별 data 수정 필요
-    response.status = user ? 404 : 200;
+    response.status = user ? 409 : 200;
     return response;
   }
 
@@ -41,15 +42,17 @@ export class UserService {
     const response: DefaultResponseDto = new DefaultResponseDto();
     // 비밀번호 재확인
     if (userDto.pw != userDto.pwCheck) {
-      throw new UnprocessableEntityException('비밀번호가 일치하지 않습니다');
-      // response.status = 404;
-      // response.data = { message: '비밀번호 오류' };
-      // return response;
+      response.status=422;
+      response.data='비밀번호가 일치하지 않습니다'
+
+      return response;
     }
     const result: CreateUserRequest = await this.userRepository.save(userDto);
 
-    response.status = result ? 200 : 404;
+    //404경우?
+    response.status = result ? 201 : 404;
     response.data = result ? { token: 'token' } : { message: '오류' };
     return response;
   }
+
 }

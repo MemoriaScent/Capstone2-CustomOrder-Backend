@@ -9,7 +9,7 @@ import {
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiAcceptedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -21,6 +21,8 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: '로그인' })
   @ApiResponse({ status: 200, description: '로그인성공' })
+  @ApiResponse({ status: 404, description: '이메일이 없습니다.' })
+  @ApiResponse({ status: 422, description: '비밀번호를 확인해주세요.' })
   async login(
     @Body() body: { email: string; pw: string },
     @Res() response: Response,

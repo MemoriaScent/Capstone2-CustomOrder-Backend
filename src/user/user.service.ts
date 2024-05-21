@@ -13,19 +13,20 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  // 이메일를 이용한 기존 사용자 찾기 - 로그인 확인
   async userFind(body) {
     const loginState = await this.userRepository.findOne({
       where: { email: body },
     });
-
     return loginState;
   }
 
+  // 이메일를 이용한 기존 사용자 찾기 -회원가입
   async emailCheck(
     emailRequest: DuplicationEmailRequest,
   ): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
-    // 이메일를 이용한 기존 사용자 찾기
+
     const user: UserEntity = await this.userRepository.findOneBy({
       email: emailRequest.email,
     });
@@ -35,6 +36,7 @@ export class UserService {
     return response;
   }
 
+  //새로운 사용자 등록
   async create(userDto: CreateUserRequest): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
     // 비밀번호 재확인

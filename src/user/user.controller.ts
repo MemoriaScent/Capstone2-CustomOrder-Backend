@@ -10,7 +10,7 @@ import { DefaultResponseDto } from '../dto/response/default.response';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Post('/signup')
+  @Post('/register')
   @ApiOperation({ summary: '회원 가입', description: '회원을 가입합니다.' })
   @ApiResponse({ status: 200, description: '회원 가입에 성공했습니다.' })
   @ApiResponse({ status: 404, description: '회원 가입에 실패했습니다.' })

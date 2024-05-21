@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     UserModule,
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -26,7 +27,6 @@ import { AuthModule } from './auth/auth.module';
       entities: [UserEntity],
       synchronize: true,
     }),
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

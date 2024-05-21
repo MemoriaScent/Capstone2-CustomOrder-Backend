@@ -11,7 +11,7 @@ import { Response } from 'express';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly registerService: UserService,
+    private readonly userService: UserService,
     private readonly authService: AuthService,
   ) {}
   //주석
@@ -20,10 +20,9 @@ export class AuthController {
     @Body() body: { email: string; pw: string },
     @Res() response: Response,
   ) {
-    const user = await this.registerService.userFind(body.email);
+    const user = await this.userService.userFind(body.email);
 
     //사용자 정보 없음
-
     if (!user) {
       throw new UnprocessableEntityException('이메일이 없습니다.');
     }

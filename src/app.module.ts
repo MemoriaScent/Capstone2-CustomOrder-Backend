@@ -14,6 +14,8 @@ import { OrderEntity } from './entity/order.entity';
 @Module({
   imports: [
     UserModule,
+    AuthModule,
+    OrderModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -28,8 +30,6 @@ import { OrderEntity } from './entity/order.entity';
       entities: [UserEntity, OrderEntity],
       synchronize: true,
     }),
-    AuthModule,
-    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -13,6 +13,7 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  // 이메일를 이용한 기존 사용자 찾기 - 로그인 확인
   async userFind(body) {
     const loginState = await this.userRepository.findOne({
       where: { email: body },
@@ -21,32 +22,37 @@ export class UserService {
     return loginState;
   }
 
+  // 이메일를 이용한 기존 사용자 찾기 - 회원가입
   async emailCheck(
     emailRequest: DuplicationEmailRequest,
   ): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
-    // 이메일를 이용한 기존 사용자 찾기
+
     const user: UserEntity = await this.userRepository.findOneBy({
       email: emailRequest.email,
     });
     // 이메일 중복 확인
     //응답별 data 수정 필요
-    response.status = user ? 404 : 200;
+    response.status = user ? 409 : 200;
     return response;
   }
 
+  //새로운 사용자 등록
   async create(userDto: CreateUserRequest): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
     // 비밀번호 재확인
     if (userDto.pw != userDto.pwCheck) {
-      response.status = 404;
-      response.data = { msg: '비밀번호 오류' };
+      response.status=422;
+      response.data='비밀번호가 일치하지 않습니다'
+
       return response;
     }
     const result: CreateUserRequest = await this.userRepository.save(userDto);
-    response.status = result ? 200 : 404;
-    response.data = result ? 'token' : { msg: '오류' };
-    console.log(response);
+
+    //404경우?
+    response.status = result ? 201 : 404;
+    response.data = result ? { token: 'token' } : { message: '오류' };
     return response;
   }
+
 }

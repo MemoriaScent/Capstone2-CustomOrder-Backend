@@ -10,8 +10,8 @@ export class OrderEntity extends DefaultEntity {
     description: '주문한 사용자의 id값',
   })
   @Column()
-  @OneToMany(() => UserEntity, (u: UserEntity) => u.id)
-  userId: UserEntity;
+  @OneToMany(() => UserEntity, (u: UserEntity) => u.email)
+  userEmail: string;
 
   @ApiProperty({
     example: '2024-01-01',

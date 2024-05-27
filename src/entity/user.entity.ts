@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from "typeorm";
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
+import { OrderEntity } from "./order.entity";
 
 @Entity()
 export class UserEntity extends DefaultEntity {

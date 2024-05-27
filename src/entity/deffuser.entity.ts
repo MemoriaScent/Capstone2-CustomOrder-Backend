@@ -1,15 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity } from "typeorm";
 import { ApiProperty } from '@nestjs/swagger';
 import { Url } from "url";
+import { DefaultEntity } from './default.entity';
 
 @Entity()
-export class DeffuserEntity {
-  @ApiProperty({
-    example: '1',
-    description: '기본값 인덱스',
-  })
-  @PrimaryGeneratedColumn()
-  Diffuserid: number;
+export class DeffuserEntity extends DefaultEntity {
 
   @ApiProperty({
     example: '레몬그라스',

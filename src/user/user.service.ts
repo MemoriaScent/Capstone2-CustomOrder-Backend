@@ -5,6 +5,7 @@ import { UserEntity } from '../entity/user.entity';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
+import { response } from 'express';
 
 @Injectable()
 export class UserService {
@@ -53,6 +54,15 @@ export class UserService {
     response.status = result ? 201 : 404;
     response.data = result ? { token: 'token' } : { message: '오류' };
     return response;
+  }
+
+  async reviewPost(body){
+    const review = await this.userRepository.save(body)
+
+    if(review){
+      
+    }
+    return false;
   }
 
 }

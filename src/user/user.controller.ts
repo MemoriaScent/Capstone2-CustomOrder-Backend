@@ -1,8 +1,8 @@
-import { Body, ConflictException, Controller, Get, Post, Query, Res, UnprocessableEntityException } from '@nestjs/common';
+import { Body, ConflictException, Controller, ForbiddenException, Get, Post, Query, Res, UnprocessableEntityException } from '@nestjs/common';
 import { ApiAcceptedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserRequest } from '../dto/request/create-user.request';
-import { Response } from 'express';
+import { Response, response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { AuthService } from 'src/auth/auth.service';
 import { DuplicationEmailRequest } from 'src/dto/request/duplication-email.request';
@@ -61,6 +61,17 @@ export class UserController {
     const user = await this.userService.userFind(req.email);
     
     response.status(200).json( user );
+  }
+
+  @Post('/review')
+  async writeReview(@Body() body){
+
+    const result = await this.userService.reviewPost(body);
+
+    if(result){
+      return response.status(200).json('{ data: 리뷰가 정상적으로 작성되었습니다. }');
+    }
+    throw new ForbiddenException('리뷰가 정상적으로 작성되지 않았습니다.')
   }
 
 }

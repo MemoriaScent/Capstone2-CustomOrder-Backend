@@ -1,4 +1,4 @@
-import { Body, ConflictException, Controller, ForbiddenException, Get, Post, Query, Res, UnprocessableEntityException } from '@nestjs/common';
+import { Body, ConflictException, Controller, ForbiddenException, Get, Post, Query, Res, UnprocessableEntityException, Delete } from '@nestjs/common';
 import { ApiAcceptedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserRequest } from '../dto/request/create-user.request';
@@ -72,6 +72,17 @@ export class UserController {
       return response.status(200).json('{ data: 리뷰가 정상적으로 작성되었습니다. }');
     }
     throw new ForbiddenException('리뷰가 정상적으로 작성되지 않았습니다.')
+  }
+
+  @Delete('/review')
+  async deleteReview(@Body() body){
+
+    const result = await this.userService.reviewDelete(body);
+
+    if(result){
+      return response.status(200).json('{ data: 리뷰가 정상적으로 삭제되었습니다. }');
+    }
+    throw new ForbiddenException('리뷰가 정상적으로 삭제되지 않았습니다.')
   }
 
 }

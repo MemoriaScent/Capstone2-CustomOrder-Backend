@@ -2,9 +2,10 @@ import { Column, Entity, OneToOne } from "typeorm";
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
 import { DeffuserEntity } from "./deffuser.entity";
+import { UserEntity } from "./user.entity";
 
 @Entity()
-export class UserEntity extends DefaultEntity {
+export class ReviewEntity extends DefaultEntity {
     @ApiProperty({
         example: '1',
         description: '사용자 고유 번호',

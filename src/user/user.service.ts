@@ -2,6 +2,7 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entity/user.entity';
+import { ReviewEntity } from 'src/entity/review.entity';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
@@ -12,6 +13,7 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    private reviewRepository: Repository<ReviewEntity>,
   ) {}
 
   // 이메일를 이용한 기존 사용자 찾기 - 로그인 확인
@@ -50,19 +52,37 @@ export class UserService {
     }
     const result: CreateUserRequest = await this.userRepository.save(userDto);
 
-    //404경우?
     response.status = result ? 201 : 404;
     response.data = result ? { token: 'token' } : { message: '오류' };
     return response;
   }
 
+  // 리뷰 작성
   async reviewPost(body){
-    const review = await this.userRepository.save(body)
+    const response: DefaultResponseDto = new DefaultResponseDto();
 
-    if(review){
-      
-    }
-    return false;
+    const write = await this.reviewRepository.save(body)
+
+    response.status = write ? 200 : 404;
+    response.data = write ? {message:'실행 완료'}:{message:'오류'};
+
+    return response;
+  }
+
+  async reviewDelete(body){
+
+    const response: DefaultResponseDto = new DefaultResponseDto();
+
+    const findReview: ReviewEntity = await this.reviewRepository.findOneBy({
+      id: body.id, userId: body.userId
+    });
+
+    const deleteReview = await this.reviewRepository.delete(findReview);
+
+    response.status = deleteReview ? 200 : 404;
+    response.data = deleteReview ? {message:'실행 완료'}:{message:'오류'};
+    
+    return response;
   }
 
 }

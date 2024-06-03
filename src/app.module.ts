@@ -8,6 +8,9 @@ import { UserEntity } from './entity/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
 import { OrderEntity } from './entity/order.entity';
+import { OrderDetailEntity } from "./entity/orderDetail.entity";
+import { DeffuserEntity } from "./entity/deffuser.entity";
+import { ReviewEntity } from "./entity/review.entity";
 
 //import process from 'process';
 
@@ -16,6 +19,9 @@ import { OrderEntity } from './entity/order.entity';
     UserModule,
     AuthModule,
     OrderModule,
+    OrderDetailEntity,
+    DeffuserEntity,
+    ReviewEntity,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

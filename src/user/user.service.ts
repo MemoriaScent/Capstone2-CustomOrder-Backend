@@ -13,6 +13,7 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(ReviewEntity)
     private reviewRepository: Repository<ReviewEntity>,
   ) {}
 
@@ -45,8 +46,8 @@ export class UserService {
     const response: DefaultResponseDto = new DefaultResponseDto();
     // 비밀번호 재확인
     if (userDto.pw != userDto.pwCheck) {
-      response.status=422;
-      response.data='비밀번호가 일치하지 않습니다'
+      response.status = 422;
+      response.data = '비밀번호가 일치하지 않습니다';
 
       return response;
     }
@@ -58,31 +59,32 @@ export class UserService {
   }
 
   // 리뷰 작성
-  async reviewPost(body){
+  async reviewPost(body) {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
-    const write = await this.reviewRepository.save(body)
+    const write = await this.reviewRepository.save(body);
 
     response.status = write ? 200 : 404;
-    response.data = write ? {message:'실행 완료'}:{message:'오류'};
+    response.data = write ? { message: '실행 완료' } : { message: '오류' };
 
     return response;
   }
 
-  async reviewDelete(body){
-
+  async reviewDelete(body) {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
     const findReview: ReviewEntity = await this.reviewRepository.findOneBy({
-      id: body.id, userId: body.userId
+      id: body.id,
+      userId: body.userId,
     });
 
     const deleteReview = await this.reviewRepository.delete(findReview);
 
     response.status = deleteReview ? 200 : 404;
-    response.data = deleteReview ? {message:'실행 완료'}:{message:'오류'};
-    
+    response.data = deleteReview
+      ? { message: '실행 완료' }
+      : { message: '오류' };
+
     return response;
   }
-
 }

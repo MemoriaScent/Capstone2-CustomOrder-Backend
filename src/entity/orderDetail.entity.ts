@@ -2,7 +2,8 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
-import { OrderEntity } from "./order.entity";
+import { OrderEntity } from './order.entity';
+import { DeffuserEntity } from './deffuser.entity';
 
 @Entity()
 export class OrderDetailEntity extends DefaultEntity {
@@ -11,7 +12,7 @@ export class OrderDetailEntity extends DefaultEntity {
     description: '디퓨저 고유번호',
   })
   @Column()
-  @OneToMany(() => 커스텀디퓨저엔티티, (d: 커스텀디퓨저엔티티) => d.id)
+  @OneToMany(() => DeffuserEntity, (d: DeffuserEntity) => d.id)
   diffuserId: number;
 
   @ApiProperty({

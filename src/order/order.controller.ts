@@ -25,7 +25,7 @@ export class OrderController {
     return res.status(response.status).json(response.data);
   }
 
-  @Get('/detail')
+  @Get('detail')
   @ApiOperation({
     summary: '주문 상세 조회',
     description: '주문을 상세하게 조회합니다.',

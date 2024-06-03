@@ -47,13 +47,20 @@ export class OrderService {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
     // 주문 상세 번호로 조회
-    const result = await this.orderDetailRepository.findOne({
+    const result = await this.orderRepository.findOne({
       where: { id: readOrderDetailRequest.orderDetailId },
     });
 
-    this.logger.error(result);
-    response.status = result ? 200 : 404;
-    response.data = result ? result : { msg: '주문한 상세 내역이 없습니다.' };
+    if (!result) {
+      response.status = 204;
+      response.data = { msg: '주문한 상세 내역이 없습니다.' };
+    } else if (readOrderDetailRequest.email != result.userEmail) {
+      response.status = 403;
+      response.data = { msg: '해당 내역을 주문한 회원이 아닙니다.' };
+    } else {
+      response.status = 200;
+      response.data = result;
+    }
     return response;
   }
 

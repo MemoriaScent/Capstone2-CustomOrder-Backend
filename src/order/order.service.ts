@@ -51,6 +51,10 @@ export class OrderService {
       where: { id: readOrderDetailRequest.orderDetailId },
     });
 
+
+    // 주문자 정보 추가하여 res 필요 =====
+
+
     if (!result) {
       response.status = 204;
       response.data = { msg: '주문한 상세 내역이 없습니다.' };

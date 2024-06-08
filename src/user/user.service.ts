@@ -6,7 +6,6 @@ import { ReviewEntity } from 'src/entity/review.entity';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
-import { response } from 'express';
 
 @Injectable()
 export class UserService {
@@ -15,6 +14,8 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
     @InjectRepository(ReviewEntity)
     private reviewRepository: Repository<ReviewEntity>,
+    // @InjectRepository (DeffuserEntity)
+    // private deffuserRepository: Repository<DeffuserEntity>,
   ) {}
 
   // 이메일를 이용한 기존 사용자 찾기 - 로그인 확인
@@ -60,20 +61,21 @@ export class UserService {
 
   // 리뷰 작성
   async reviewPost(body) {
-    const response: DefaultResponseDto = new DefaultResponseDto();
+    const res: DefaultResponseDto = new DefaultResponseDto();
 
     const write = await this.reviewRepository.save(body);
 
-    response.status = write ? 200 : 404;
-    response.data = write ? { message: '실행 완료' } : { message: '오류' };
+    res.status = write ? 200 : 404;
+    res.data = write ? { message: '실행 완료' } : { message: '오류' };
 
-    return response;
+    return res;
   }
 
+  //리뷰 삭제
   async reviewDelete(body) {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
-    const findReview: ReviewEntity = await this.reviewRepository.findOneBy({
+    const findReview = await this.reviewRepository.findOneBy({
       id: body.id,
       userId: body.userId,
     });

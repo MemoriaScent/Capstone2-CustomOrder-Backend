@@ -9,7 +9,8 @@ import {
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
-import { ApiAcceptedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { LoginRequest } from 'src/dto/request/login.request';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -24,7 +25,7 @@ export class AuthController {
   @ApiResponse({ status: 404, description: '이메일이 없습니다.' })
   @ApiResponse({ status: 422, description: '비밀번호를 확인해주세요.' })
   async login(
-    @Body() body: { email: string; pw: string },
+    @Body() body: LoginRequest,
     @Res() response: Response,
   ) {
     const user = await this.userService.userFind(body.email);

@@ -11,6 +11,9 @@ import { OrderEntity } from './entity/order.entity';
 import { OrderDetailEntity } from "./entity/orderDetail.entity";
 import { DeffuserEntity } from "./entity/deffuser.entity";
 import { ReviewEntity } from "./entity/review.entity";
+import { DeffuserModule } from './deffuser/deffuser.module';
+import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
+
 
 //import process from 'process';
 
@@ -19,8 +22,10 @@ import { ReviewEntity } from "./entity/review.entity";
     UserModule,
     AuthModule,
     OrderModule,
+    DeffuserModule,
     OrderDetailEntity,
     DeffuserEntity,
+    CustomDeffuserEntity,
     ReviewEntity,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -33,11 +38,11 @@ import { ReviewEntity } from "./entity/review.entity";
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [UserEntity, OrderEntity],
+      entities: [UserEntity, OrderEntity, DeffuserEntity, CustomDeffuserEntity,ReviewEntity],
       synchronize: true,
     }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

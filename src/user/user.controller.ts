@@ -1,11 +1,12 @@
-import { Body, ConflictException, Controller, ForbiddenException, Get, Post, Query, Res, UnprocessableEntityException, Delete } from '@nestjs/common';
-import { ApiAcceptedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, ConflictException, Controller, ForbiddenException, Get, Post, Query, Res, UnprocessableEntityException, Delete, NotFoundException } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { Response, response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { AuthService } from 'src/auth/auth.service';
 import { DuplicationEmailRequest } from 'src/dto/request/duplication-email.request';
+import { AddReviewRequest } from 'src/dto/request/add-review.request';
 
 @ApiTags('사용자 API')
 @Controller('user')
@@ -20,11 +21,13 @@ export class UserController {
   @ApiResponse({ status: 201, description: '회원 가입에 성공했습니다.' })
   @ApiResponse({ status: 422, description: '비밀번호가 일치하지 않습니다' })
   async create(@Body() userDto: CreateUserRequest, @Res() response: Response) {
+    
     //DB에 새로운 유저 데이터 저장
     const res: DefaultResponseDto = await this.userService.create(userDto);
     
     //정상적으로 저장 완료시 token 발급
     if(res.status===201){
+
       const user = await this.userService.userFind(userDto.email);
       const jwt = this.authService.getAccessToken({ user });
 
@@ -56,17 +59,25 @@ export class UserController {
   @Get('/myaccount')
   @ApiOperation({ summary: '개인 정보 확인', description: '사용자의 개인 정보를 가져옵니다' })
   @ApiResponse({ status: 200, description: 'data' })
+  @ApiResponse({ status: 404, description: '조회되는 사용자가 없습니다.' })
   async userinfo(@Query() req: DuplicationEmailRequest, @Res() response:Response){
 
     const user = await this.userService.userFind(req.email);
     
-    response.status(200).json( user );
+    if(user!==null){
+      return response.status(200).json( user );
+    }
+
+    throw new NotFoundException('조회되는 사용자가 없습니다.')
   }
 
   @Post('/review')
-  async writeReview(@Body() body){
+  @ApiOperation({ summary: '리뷰 작성', description: '상품의 리뷰를 작성합니다' })
+  @ApiResponse({ status: 201, description: '리뷰가 정상적으로 작성되었습니다' })
+  @ApiResponse({ status: 409, description: '리뷰가 정상적으로 작성되지 않았습니다.' })
+  async writeReview(@Body() reviewDto : AddReviewRequest, @Res() response: Response){
 
-    const result = await this.userService.reviewPost(body);
+    const result = await this.userService.reviewPost(reviewDto);
 
     if(result){
       return response.status(200).json('{ data: 리뷰가 정상적으로 작성되었습니다. }');
@@ -75,6 +86,9 @@ export class UserController {
   }
 
   @Delete('/review')
+  @ApiOperation({ summary: '리뷰 삭제', description: '상품의 리뷰를 삭제합니다' })
+  @ApiResponse({ status: 200, description: '리뷰가 정상적으로 삭제되었습니다.' })
+  @ApiResponse({ status: 404, description: '리뷰 정상적으로 삭제되지 않았습니다.' })
   async deleteReview(@Body() body){
 
     const result = await this.userService.reviewDelete(body);

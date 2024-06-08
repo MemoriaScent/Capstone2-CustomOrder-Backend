@@ -13,6 +13,8 @@ import { DeffuserEntity } from "./entity/deffuser.entity";
 import { ReviewEntity } from "./entity/review.entity";
 import { DeffuserModule } from './deffuser/deffuser.module';
 import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
+import { CartEntity } from "./entity/cart.entity";
+import { CartModule } from "./cart/cart.module";
 
 
 //import process from 'process';
@@ -27,6 +29,7 @@ import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
     DeffuserEntity,
     CustomDeffuserEntity,
     ReviewEntity,
+    CartModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -38,7 +41,7 @@ import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [UserEntity, OrderEntity, DeffuserEntity, CustomDeffuserEntity,ReviewEntity],
+      entities: [UserEntity, OrderEntity, DeffuserEntity, CustomDeffuserEntity, ReviewEntity, CartEntity],
       synchronize: true,
     }),
   ],

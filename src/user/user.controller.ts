@@ -89,7 +89,7 @@ export class UserController {
   @ApiOperation({ summary: '리뷰 삭제', description: '상품의 리뷰를 삭제합니다' })
   @ApiResponse({ status: 200, description: '리뷰가 정상적으로 삭제되었습니다.' })
   @ApiResponse({ status: 404, description: '리뷰 정상적으로 삭제되지 않았습니다.' })
-  async deleteReview(@Body() body){
+  async deleteReview(@Body() body, @Res() response: Response){
 
     const result = await this.userService.reviewDelete(body);
 

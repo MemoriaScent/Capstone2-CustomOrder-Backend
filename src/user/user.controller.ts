@@ -19,7 +19,7 @@ export class UserController {
   ) {}
 
   @Post('/register')
-  @ApiOperation({ summary: '회원 가입', description: '회원을 가입합니다.' })
+  @ApiOperation({ summary: '회원 가입', description: '새로운 사용자 정보를 추가합니다' })
   @ApiResponse({ status: 201, description: '회원 가입에 성공했습니다.' })
   @ApiResponse({ status: 422, description: '비밀번호가 일치하지 않습니다' })
   async create(@Body() userDto: CreateUserRequest, @Res() response: Response) {
@@ -60,7 +60,7 @@ export class UserController {
 
   @Get('/myaccount')
   @ApiOperation({ summary: '개인 정보 확인', description: '사용자의 개인 정보를 가져옵니다' })
-  @ApiResponse({ status: 200, description: 'data' })
+  @ApiResponse({ status: 200, description: '사용자의 email, 주소, 전화번호를 가져옵니다. ' })
   @ApiResponse({ status: 404, description: '조회되는 사용자가 없습니다.' })
   async userinfo(@Query() req: DuplicationEmailRequest, @Res() response:Response){
 

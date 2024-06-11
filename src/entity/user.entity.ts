@@ -1,8 +1,6 @@
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
-import { OrderEntity } from "./order.entity";
-import { CartEntity } from "./cart.entity";
 
 @Entity()
 export class UserEntity extends DefaultEntity {
@@ -40,7 +38,4 @@ export class UserEntity extends DefaultEntity {
   })
   @Column()
   location: string;
-
-  @OneToMany(() => CartEntity, (cart) => cart.user)
-  carts: CartEntity[];
 }

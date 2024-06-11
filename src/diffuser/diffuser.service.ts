@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DefaultResponseDto } from 'src/dto/response/default.response';
 import { CustomDeffuserEntity } from 'src/entity/customDeffuser.entity';
-import { DeffuserEntity } from 'src/entity/deffuser.entity';
+import { DiffuserEntity } from 'src/entity/diffuser.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class DeffuserService {
     constructor(
-        @InjectRepository(DeffuserEntity)
-        private deffuserRepository: Repository<DeffuserEntity>,
+        @InjectRepository(DiffuserEntity)
+        private deffuserRepository: Repository<DiffuserEntity>,
         @InjectRepository(CustomDeffuserEntity)
         private customDeffuserRepository:Repository<CustomDeffuserEntity>,
     ) { }

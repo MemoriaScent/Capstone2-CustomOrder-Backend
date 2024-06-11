@@ -43,6 +43,7 @@ import { CartModule } from './cart/cart.module';
       entities: [
         UserEntity,
         OrderEntity,
+        OrderDetailEntity,
         DeffuserEntity,
         CustomDeffuserEntity,
         ReviewEntity,

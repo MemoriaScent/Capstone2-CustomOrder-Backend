@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
 import { UserEntity } from './user.entity';
+import { OrderDetailEntity } from "./orderDetail.entity";
 
 @Entity()
 export class OrderEntity extends DefaultEntity {
@@ -9,9 +10,9 @@ export class OrderEntity extends DefaultEntity {
     example: '1',
     description: '주문한 사용자의 id값',
   })
-  @Column()
-  @OneToMany(() => UserEntity, (u: UserEntity) => u.email)
-  userEmail: string;
+  @ManyToOne(() => UserEntity, (u: UserEntity) => u.id)
+  @JoinColumn()
+  userId: UserEntity;
 
   @ApiProperty({
     example: '2024-01-01',
@@ -43,8 +44,8 @@ export class OrderEntity extends DefaultEntity {
 
   @ApiProperty({
     example: '3',
-    description: '주문 수량',
+    description: '주문 종류 수량',
   })
   @Column()
-  count: number;
+  categoryAmount: number;
 }

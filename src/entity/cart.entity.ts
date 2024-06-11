@@ -1,14 +1,15 @@
 // 장바구니 엔티티
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
 import { UserEntity } from './user.entity';
-import { DeffuserEntity } from './deffuser.entity';
+import { DiffuserEntity } from './diffuser.entity';
 
 @Entity()
 export class CartEntity extends DefaultEntity {
-  @ManyToOne(() => DeffuserEntity, (diffuser) => diffuser.id)
-  diffuserId: DeffuserEntity;
+  @ManyToOne(() => DiffuserEntity, (diffuser) => diffuser.id)
+  @JoinColumn()
+  diffuserId: DiffuserEntity;
 
   @ApiProperty({
     example: '12000',
@@ -24,6 +25,7 @@ export class CartEntity extends DefaultEntity {
   @Column()
   quantity: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.carts)
+  @ManyToOne(() => UserEntity, (user) => user.id)
+  @JoinColumn()
   user: UserEntity;
 }

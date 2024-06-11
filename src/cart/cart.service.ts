@@ -51,6 +51,7 @@ export class CartService {
       cartItem = this.cartRepository.create({
         user: user,
         diffuserId: diffuser,
+        price: diffuser.Price,
         quantity: Number(createCartRequest.quantity),
       });
     }
@@ -66,17 +67,21 @@ export class CartService {
   async read(emailRequest: EmailRequest): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
-    // const result = await this.cartRepository.find({
-    //   where: { email: emailRequest.email },
-    // });
-    //
-    // if (result && result.length > 0) {
-    //   response.status = 200;
-    //   response.data = result;
-    // } else {
-    //   response.status = 400;
-    //   response.data = { msg: '장바구니에 담은 내역이 없습니다.' };
-    // }
+    const userE = await this.userRepository.find({
+      where: { email: emailRequest.email },
+    });
+
+    const result = await this.cartRepository.find({
+      where: { user: userE },
+    });
+
+    if (result && result.length > 0) {
+      response.status = 200;
+      response.data = { user: userE, diffuser: result };
+    } else {
+      response.status = 204;
+      response.data = { msg: '장바구니에 담은 내역이 없습니다.' };
+    }
     return response;
   }
 }

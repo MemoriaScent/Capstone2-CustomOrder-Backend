@@ -11,6 +11,13 @@ export class CartEntity extends DefaultEntity {
   diffuserId: DeffuserEntity;
 
   @ApiProperty({
+    example: '12000',
+    description: '가격',
+  })
+  @Column()
+  price: number;
+
+  @ApiProperty({
     example: '3',
     description: '주문 수량',
   })

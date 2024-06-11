@@ -9,9 +9,9 @@ import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
 import { OrderEntity } from './entity/order.entity';
 import { OrderDetailEntity } from './entity/orderDetail.entity';
-import { DeffuserEntity } from './entity/deffuser.entity';
+import { DiffuserEntity } from './entity/diffuser.entity';
 import { ReviewEntity } from './entity/review.entity';
-import { DeffuserModule } from './deffuser/deffuser.module';
+import { DeffuserModule } from './diffuser/deffuser.module';
 import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
 import { CartEntity } from './entity/cart.entity';
 import { CartModule } from './cart/cart.module';
@@ -25,7 +25,7 @@ import { CartModule } from './cart/cart.module';
     OrderModule,
     DeffuserModule,
     OrderDetailEntity,
-    DeffuserEntity,
+    DiffuserEntity,
     CustomDeffuserEntity,
     ReviewEntity,
     CartModule,
@@ -44,7 +44,7 @@ import { CartModule } from './cart/cart.module';
         UserEntity,
         OrderEntity,
         OrderDetailEntity,
-        DeffuserEntity,
+        DiffuserEntity,
         CustomDeffuserEntity,
         ReviewEntity,
         CartEntity,

@@ -5,23 +5,34 @@ import { DefaultResponseDto } from '../dto/response/default.response';
 import { OrderService } from './order.service';
 import { ReadOrderDetailRequest } from '../dto/request/read-orderDetail.request';
 import { CreateOrderCancelRequest } from '../dto/request/create-orderCancel.request';
-import { EmailRequest } from '../dto/request/email.request';
+import { IdRequest } from '../dto/request/id.request';
+import { CreateOrderRequest } from '../dto/request/createOrder.request';
 
 @ApiTags('주문 API')
 @Controller('order')
 export class OrderController {
   constructor(
-    private readonly userService: OrderService,
+    private readonly orderService: OrderService,
     private readonly logger: Logger,
   ) {}
+
+  @Post()
+  async create(
+    @Body() createOrderRequest: CreateOrderRequest,
+    @Res() res: Response
+  ) {
+    const response: DefaultResponseDto =
+      await this.orderService.create(createOrderRequest);
+    return res.status(response.status).json(response.data);
+  }
 
   @Get('')
   @ApiOperation({ summary: '주문 조회', description: '주문을 조회합니다.' })
   @ApiResponse({ status: 200, description: '주문 조회에 성공했습니다.' })
   @ApiResponse({ status: 404, description: '주문 조회에 실패했습니다.' })
-  async read(@Body() emailRequest: EmailRequest, @Res() res: Response) {
+  async read(@Body() emailRequest: IdRequest, @Res() res: Response) {
     const response: DefaultResponseDto =
-      await this.userService.read(emailRequest);
+      await this.orderService.read(emailRequest);
     return res.status(response.status).json(response.data);
   }
 
@@ -32,13 +43,16 @@ export class OrderController {
   })
   @ApiResponse({ status: 200, description: '주문 상세 조회에 성공했습니다.' })
   @ApiResponse({ status: 204, description: '주문한 상세 내역이 없습니다.' })
-  @ApiResponse({ status: 403, description: '해당 내역을 주문한 회원이 아닙니다.' })
+  @ApiResponse({
+    status: 403,
+    description: '해당 내역을 주문한 회원이 아닙니다.',
+  })
   @ApiResponse({ status: 404, description: '주문 상세 조회에 실패했습니다.' })
   async readDetail(
     @Body() readOrderDetailRequest: ReadOrderDetailRequest,
     @Res() res: Response,
   ) {
-    const response: DefaultResponseDto = await this.userService.readDetail(
+    const response: DefaultResponseDto = await this.orderService.readDetail(
       readOrderDetailRequest,
     );
     if (response.status === 404) this.logger.error('주문 상세 조회 오류');
@@ -56,10 +70,17 @@ export class OrderController {
     @Body() createOrderCancelRequest: CreateOrderCancelRequest,
     @Res() res: Response,
   ) {
-    const response: DefaultResponseDto = await this.userService.orderCancel(
+    const response: DefaultResponseDto = await this.orderService.orderCancel(
       createOrderCancelRequest,
     );
     if (response.status === 404) this.logger.error('주문 취소 오류');
+    return res.status(response.status).json(response.data);
+  }
+
+  @Get('/pay')
+  async readPay(@Body() emailRequest: IdRequest, @Res() res: Response) {
+    const response: DefaultResponseDto =
+      await this.orderService.read(emailRequest);
     return res.status(response.status).json(response.data);
   }
 }

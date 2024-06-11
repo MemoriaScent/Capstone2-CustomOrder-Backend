@@ -2,12 +2,12 @@ import { Repository } from 'typeorm';
 import { Body, Injectable, Logger, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DefaultResponseDto } from '../dto/response/default.response';
-import { EmailRequest } from '../dto/request/email.request';
+import { IdRequest } from '../dto/request/id.request';
 import { CartEntity } from '../entity/cart.entity';
 import { CreateCartRequest } from '../dto/request/createCart.request';
 import { Response } from 'express';
 import { UserEntity } from '../entity/user.entity';
-import { DeffuserEntity } from '../entity/deffuser.entity';
+import { DiffuserEntity } from '../entity/diffuser.entity';
 
 @Injectable()
 export class CartService {
@@ -16,8 +16,8 @@ export class CartService {
     private readonly cartRepository: Repository<CartEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    @InjectRepository(DeffuserEntity)
-    private readonly diffuserRepository: Repository<DeffuserEntity>,
+    @InjectRepository(DiffuserEntity)
+    private readonly diffuserRepository: Repository<DiffuserEntity>,
     private readonly logger: Logger,
   ) {}
 
@@ -64,11 +64,11 @@ export class CartService {
   }
 
   // 장바구니 페이지 불러오기
-  async read(emailRequest: EmailRequest): Promise<DefaultResponseDto> {
+  async read(idRequest: IdRequest): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
     const userE = await this.userRepository.find({
-      where: { email: emailRequest.email },
+      where: { id: idRequest.userId },
     });
 
     const result = await this.cartRepository.find({

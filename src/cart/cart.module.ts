@@ -4,11 +4,11 @@ import { UserEntity } from '../entity/user.entity';
 import { CartEntity } from "../entity/cart.entity";
 import { CartController } from "./cart.controller";
 import { CartService } from "./cart.service";
-import { DeffuserEntity } from "../entity/deffuser.entity";
+import { DiffuserEntity } from "../entity/diffuser.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, DeffuserEntity, CartEntity]),
+    TypeOrmModule.forFeature([UserEntity, DiffuserEntity, CartEntity]),
   ],
   controllers: [CartController],
   providers: [CartService, Logger],

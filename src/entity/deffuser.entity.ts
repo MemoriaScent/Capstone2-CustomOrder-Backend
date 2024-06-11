@@ -1,6 +1,7 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
+import { CartEntity } from "./cart.entity";
 
 @Entity()
 export class DeffuserEntity extends DefaultEntity {
@@ -25,4 +26,6 @@ export class DeffuserEntity extends DefaultEntity {
   @Column()
   Price: number;
 
+  @OneToMany(() => CartEntity, (cart) => cart.diffuserId)
+  cartItems: CartEntity[];
 }

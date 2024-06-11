@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Logger, Res } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, Res } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { EmailRequest } from '../dto/request/email.request';
 import { CartService } from './cart.service';
+import { CreateCartRequest } from "../dto/request/createCart.request";
 
 @ApiTags('장바구니 API')
 @Controller('cart')
@@ -12,6 +13,20 @@ export class CartController {
     private readonly cartService: CartService,
     private readonly logger: Logger,
   ) {}
+
+
+  @Post()
+  @ApiOperation({
+    summary: '장바구니 담기',
+    description: '디퓨저를 장바구니에 담습니다.',
+  })
+  @ApiResponse({ status: 201, description: '디퓨저를 장바구니에 담았습니다.' })
+  @ApiResponse({ status: 404, description: '해당 사용자 또는 디퓨저를 찾지 못했습니다.' })
+  async create(@Body() createCartRequest: CreateCartRequest, @Res() res: Response){
+    const response: DefaultResponseDto =
+      await this.cartService.create(createCartRequest);
+    return res.status(response.status).json(response.data);
+  }
 
   @Get()
   @ApiOperation({

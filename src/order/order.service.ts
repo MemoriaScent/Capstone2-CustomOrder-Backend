@@ -1,5 +1,9 @@
 import { Repository } from 'typeorm';
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { OrderEntity } from '../entity/order.entity';
@@ -10,6 +14,7 @@ import { CreateOrderCancelRequest } from '../dto/request/create-orderCancel.requ
 import { IdRequest } from '../dto/request/id.request';
 import { CreateOrderRequest } from '../dto/request/createOrder.request';
 import { DiffuserEntity } from '../entity/diffuser.entity';
+import { OrderCancelEntity } from '../entity/orderCancel.entity';
 
 @Injectable()
 export class OrderService {
@@ -22,6 +27,8 @@ export class OrderService {
     private readonly orderRepository: Repository<OrderEntity>,
     @InjectRepository(OrderDetailEntity)
     private readonly orderDetailRepository: Repository<OrderDetailEntity>,
+    @InjectRepository(OrderCancelEntity)
+    private readonly orderCancelEntityRepository: Repository<OrderCancelEntity>,
     private readonly logger: Logger,
   ) {}
 
@@ -58,17 +65,19 @@ export class OrderService {
 
       // 주문 상세 정보 생성
       for (const orderItemData of createOrderRequest.orderItems) {
-        const orderDetailEntity = new OrderDetailEntity(); //저장할 데이터
-        const deffuserEntity: DiffuserEntity = new DiffuserEntity(); //디퓨저 번호 기재용
-        deffuserEntity.id = orderItemData.diffuserId;
-        orderDetailEntity.count = orderItemData.diffuserAmount;
-        orderDetailEntity.diffuserId = deffuserEntity;
-        orderDetailEntity.order = order; // 주문과의 관계 설정
-        this.orderDetailRepository.save(orderDetailEntity);
-      }
+        const diffuserEntity: DiffuserEntity = new DiffuserEntity(); //디퓨저 번호 기재용
+        diffuserEntity.id = orderItemData.diffuserId;
 
+        const orderDetailEntity = new OrderDetailEntity(); //저장할 데이터
+        orderDetailEntity.diffuserId = diffuserEntity;
+        orderDetailEntity.count = orderItemData.diffuserAmount;
+        orderDetailEntity.order = order; // 주문과의 관계 설정
+        this.logger.debug(orderDetailEntity.diffuserId.id);
+        await this.orderDetailRepository.save(orderDetailEntity);
+      }
       response.status = 200;
     } catch (error) {
+      this.logger.warn(error);
       response.status = 500;
       response.data = { msg: '주문을 저장하는 동안 오류가 발생했습니다.' };
     }
@@ -129,15 +138,21 @@ export class OrderService {
 
   async orderCancel(
     createOrderCancelRequest: CreateOrderCancelRequest,
-  ): Promise<DefaultResponseDto> {
-    const response: DefaultResponseDto = new DefaultResponseDto();
-    //
-    //   // 주문 취소 테이블 작성 후 코드 작성
-    //   const result: 주문 취소 테이블 = await this.userRepository.save(createOrderCancelRequest);
-    //
-    //   this.logger.error(result);
-    //   response.status = result ? 200 : 404;
-    //   response.data = result ? result : { msg: '주문한 상세 내역이 없습니다.' };
-    return response;
+  ): Promise<number> {
+    const orderEntity = new OrderEntity();
+    orderEntity.id = createOrderCancelRequest.orderId;
+
+    const orderCancelEntity = new OrderCancelEntity();
+    orderCancelEntity.orderId = orderEntity;
+    orderCancelEntity.title = createOrderCancelRequest.title;
+    orderCancelEntity.content = createOrderCancelRequest.content;
+
+    try {
+      await this.orderCancelEntityRepository.save(orderCancelEntity);
+    } catch (e) {
+      this.logger.warn(e);
+      throw new InternalServerErrorException('서버가 오류 났습니다.');
+    }
+    return;
   }
 }

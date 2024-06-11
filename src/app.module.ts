@@ -11,10 +11,11 @@ import { OrderEntity } from './entity/order.entity';
 import { OrderDetailEntity } from './entity/orderDetail.entity';
 import { DiffuserEntity } from './entity/diffuser.entity';
 import { ReviewEntity } from './entity/review.entity';
-import { DeffuserModule } from './diffuser/deffuser.module';
+import { DiffuserModule } from './diffuser/diffuser.module';
 import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
 import { CartEntity } from './entity/cart.entity';
 import { CartModule } from './cart/cart.module';
+import { OrderCancelEntity } from "./entity/orderCancel.entity";
 
 //import process from 'process';
 
@@ -23,7 +24,7 @@ import { CartModule } from './cart/cart.module';
     UserModule,
     AuthModule,
     OrderModule,
-    DeffuserModule,
+    DiffuserModule,
     OrderDetailEntity,
     DiffuserEntity,
     CustomDeffuserEntity,
@@ -48,6 +49,7 @@ import { CartModule } from './cart/cart.module';
         CustomDeffuserEntity,
         ReviewEntity,
         CartEntity,
+        OrderCancelEntity,
       ],
       synchronize: true,
     }),

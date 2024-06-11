@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { DefaultResponseDto } from 'src/dto/response/default.response';
 import { CustomDeffuserEntity } from 'src/entity/customDeffuser.entity';
 import { DiffuserEntity } from 'src/entity/diffuser.entity';
 import { Repository } from 'typeorm';
+import { AddDeffuserRequest } from "../dto/request/add-deffuser.request";
 
 @Injectable()
 export class DiffuserService {
@@ -12,17 +13,22 @@ export class DiffuserService {
     private diffuserRepository: Repository<DiffuserEntity>,
     @InjectRepository(CustomDeffuserEntity)
     private customDiffuserRepository: Repository<CustomDeffuserEntity>,
+    private readonly logger: Logger,
   ) {}
 
   //일반 디퓨저 정보 저장
-  async addDeffuser(body) {
+  async addDiffuser(body: AddDeffuserRequest) {
+    const diffuserEntity: DiffuserEntity = new DiffuserEntity();
+    diffuserEntity.Name = body.Name;
+    diffuserEntity.Image = body.Image;
+    diffuserEntity.Price = body.Price;
+    const result = await this.diffuserRepository.save(diffuserEntity);
+
     const res: DefaultResponseDto = new DefaultResponseDto();
 
-    const addDeffuser = await this.diffuserRepository.save(body);
+    res.status = result ? 201 : 404;
 
-    res.status = addDeffuser ? 201 : 404;
-
-    res.data = addDeffuser ? { message: '실행 완료' } : { message: '오류' };
+    res.data = result ? { message: '실행 완료' } : { message: '오류' };
 
     return res;
   }

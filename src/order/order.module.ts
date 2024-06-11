@@ -5,10 +5,16 @@ import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { UserEntity } from '../entity/user.entity';
 import { OrderDetailEntity } from '../entity/orderDetail.entity';
+import { OrderCancelEntity } from '../entity/orderCancel.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, OrderEntity, OrderDetailEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      OrderEntity,
+      OrderDetailEntity,
+      OrderCancelEntity,
+    ]),
   ],
   controllers: [OrderController],
   providers: [OrderService, Logger],

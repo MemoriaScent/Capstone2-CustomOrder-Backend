@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DiffuserService } from './diffuser.service';
 import { DiffuserController } from './diffuser.controller';
@@ -17,7 +17,7 @@ import { ReviewEntity } from 'src/entity/review.entity';
     ]),
   ],
   controllers: [DiffuserController],
-  providers: [DiffuserService],
-  exports: [TypeOrmModule],
+  providers: [DiffuserService, Logger],
+  exports: [TypeOrmModule, Logger],
 })
-export class DeffuserModule {}
+export class DiffuserModule {}

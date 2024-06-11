@@ -2,16 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateOrderCancelRequest {
   @ApiProperty({
-    example: '1234@memoria.kr',
-    description: '사용자 이메일',
-  })
-  email: string;
-
-  @ApiProperty({
     example: '1',
     description: '주문 번호',
   })
-  orderId: string;
+  orderId: number;
 
   @ApiProperty({
     example: '단순 변심',

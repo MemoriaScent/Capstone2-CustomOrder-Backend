@@ -19,7 +19,7 @@ export class OrderController {
   @Post()
   async create(
     @Body() createOrderRequest: CreateOrderRequest,
-    @Res() res: Response
+    @Res() res: Response,
   ) {
     const response: DefaultResponseDto =
       await this.orderService.create(createOrderRequest);
@@ -64,17 +64,12 @@ export class OrderController {
     summary: '주문 취소',
     description: '주문을 취소합니다.',
   })
-  @ApiResponse({ status: 200, description: '주문 취소에 성공했습니다.' })
-  @ApiResponse({ status: 404, description: '주문 취소에 실패했습니다.' })
+  @ApiResponse({ status: 201, description: '주문 취소에 성공했습니다.' })
+  @ApiResponse({ status: 500, description: '주문 취소에 실패했습니다.' })
   async orderCancel(
     @Body() createOrderCancelRequest: CreateOrderCancelRequest,
-    @Res() res: Response,
   ) {
-    const response: DefaultResponseDto = await this.orderService.orderCancel(
-      createOrderCancelRequest,
-    );
-    if (response.status === 404) this.logger.error('주문 취소 오류');
-    return res.status(response.status).json(response.data);
+    return this.orderService.orderCancel(createOrderCancelRequest);
   }
 
   @Get('/pay')

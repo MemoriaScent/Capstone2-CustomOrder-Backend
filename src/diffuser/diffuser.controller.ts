@@ -5,6 +5,7 @@ import {
   Post,
   Res,
   Get,
+  Logger,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DefaultResponseDto } from 'src/dto/response/default.response';
@@ -16,7 +17,10 @@ import { AddCustomDeffuserRequest } from 'src/dto/request/add-customDeffuser.req
 @ApiTags('디퓨저 API')
 @Controller('diffuser')
 export class DiffuserController {
-  constructor(private diffuserService: DiffuserService) {}
+  constructor(
+    private readonly diffuserService: DiffuserService,
+    private readonly logger: Logger,
+  ) {}
 
   //일반 디퓨저 추가
   @Post('')
@@ -37,7 +41,7 @@ export class DiffuserController {
     @Res() response: Response,
   ) {
     const res: DefaultResponseDto =
-      await this.diffuserService.addDeffuser(deffuserDto);
+      await this.diffuserService.addDiffuser(deffuserDto);
 
     if (res.status === 201) {
       return response

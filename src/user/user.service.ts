@@ -59,6 +59,15 @@ export class UserService {
     return response;
   }
 
+  async update(id,userDto){
+    console.log(userDto);
+    const user= await this.userRepository.update(id,userDto);
+    console.log(user);
+    return user;
+
+  }
+
+
   // 리뷰 작성
   async reviewPost(body) {
     const res: DefaultResponseDto = new DefaultResponseDto();

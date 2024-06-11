@@ -21,8 +21,8 @@ export class AuthController {
   //사용자 로그인
   @Post('login')
   @ApiOperation({ summary: '로그인' })
-  @ApiResponse({ status: 200, description: '로그인성공' })
-  @ApiResponse({ status: 404, description: '이메일이 없습니다.' })
+  @ApiResponse({ status: 200, description: '로그인 되었습니다' })
+  @ApiResponse({ status: 404, description: '이메일을 찾을 수 없습니다.' })
   @ApiResponse({ status: 422, description: '비밀번호를 확인해주세요.' })
   async login(
     @Body() body: LoginRequest,
@@ -32,7 +32,7 @@ export class AuthController {
 
     //사용자 정보 없음
     if (!user) {
-      throw new NotFoundException('이메일이 없습니다.');
+      throw new NotFoundException('이메일을 찾을 수 없습니다.');
     }
 
     const isAuth = await (body.pw === user.pw);
@@ -44,6 +44,6 @@ export class AuthController {
 
     const jwt = this.authService.getAccessToken({ user });
 
-    return response.status(200).json({ message: '로그인 성공', token: jwt });
+    return response.status(200).json({ message: '로그인 되었습니다', token: jwt });
   }
 }

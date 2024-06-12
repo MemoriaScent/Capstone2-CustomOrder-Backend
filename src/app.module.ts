@@ -15,21 +15,20 @@ import { DiffuserModule } from './diffuser/diffuser.module';
 import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
 import { CartEntity } from './entity/cart.entity';
 import { CartModule } from './cart/cart.module';
-import { OrderCancelEntity } from "./entity/orderCancel.entity";
+import { OrderCancelEntity } from './entity/orderCancel.entity';
+import { TossModule } from './pay/toss.module';
+import { TossEntity } from './entity/toss.entity';
 
 //import process from 'process';
 
 @Module({
   imports: [
-    UserModule,
     AuthModule,
-    OrderModule,
-    DiffuserModule,
-    OrderDetailEntity,
-    DiffuserEntity,
-    CustomDeffuserEntity,
-    ReviewEntity,
     CartModule,
+    DiffuserModule,
+    OrderModule,
+    TossModule,
+    UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -42,20 +41,21 @@ import { OrderCancelEntity } from "./entity/orderCancel.entity";
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [
-        UserEntity,
-        OrderEntity,
-        OrderDetailEntity,
-        DiffuserEntity,
-        CustomDeffuserEntity,
-        ReviewEntity,
         CartEntity,
+        CustomDeffuserEntity,
+        DiffuserEntity,
+        OrderEntity,
         OrderCancelEntity,
+        OrderDetailEntity,
+        ReviewEntity,
+        TossEntity,
+        UserEntity,
       ],
       synchronize: true,
     }),
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
-  exports: [Logger]
+  exports: [Logger],
 })
 export class AppModule {}

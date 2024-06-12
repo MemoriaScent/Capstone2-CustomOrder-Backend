@@ -15,6 +15,7 @@ import { IdRequest } from '../dto/request/id.request';
 import { CreateOrderRequest } from '../dto/request/createOrder.request';
 import { DiffuserEntity } from '../entity/diffuser.entity';
 import { OrderCancelEntity } from '../entity/orderCancel.entity';
+import { AuthService } from "../auth/auth.service";
 
 @Injectable()
 export class OrderService {
@@ -110,7 +111,7 @@ export class OrderService {
     return response;
   }
 
-  // 주문 상세 페이지
+  // 주문 상세 조회
   async readDetail(
     readOrderDetailRequest: ReadOrderDetailRequest,
   ): Promise<DefaultResponseDto> {
@@ -128,9 +129,9 @@ export class OrderService {
       },
     });
 
-    if (!result) {
-      response.status = 204;
-      response.data = { msg: '주문한 상세 내역이 없습니다.' };
+    if (result.length == 0) {
+      response.status = 404;
+      response.data = { msg: '주문 번호가 잘못되었습니다.' };
     } else {
       response.status = 200;
       response.data = result;

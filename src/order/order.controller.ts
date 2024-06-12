@@ -52,7 +52,7 @@ export class OrderController {
     description: '주문을 상세하게 조회합니다.',
   })
   @ApiResponse({ status: 200, description: '주문 상세 조회에 성공했습니다.' })
-  @ApiResponse({ status: 204, description: '주문한 상세 내역이 없습니다.' })
+  @ApiResponse({ status: 404, description: '주문 번호가 잘못되었습니다.' })
   @ApiResponse({
     status: 403,
     description: '해당 내역을 주문한 회원이 아닙니다.',

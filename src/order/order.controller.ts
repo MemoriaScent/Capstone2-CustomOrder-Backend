@@ -17,6 +17,16 @@ export class OrderController {
   ) {}
 
   @Post()
+  @ApiOperation({
+    summary: '결제 후 주문 넘어가기',
+    description: '주문을 생성합니다.',
+  })
+  @ApiResponse({ status: 201, description: '주문 생성에 성공했습니다.' })
+  @ApiResponse({ status: 404, description: '사용자를 찾을 수 없습니다.' })
+  @ApiResponse({
+    status: 500,
+    description: '주문을 저장하는 동안 오류가 발생했습니다.',
+  })
   async create(
     @Body() createOrderRequest: CreateOrderRequest,
     @Res() res: Response,
@@ -30,9 +40,9 @@ export class OrderController {
   @ApiOperation({ summary: '주문 조회', description: '주문을 조회합니다.' })
   @ApiResponse({ status: 200, description: '주문 조회에 성공했습니다.' })
   @ApiResponse({ status: 404, description: '주문 조회에 실패했습니다.' })
-  async read(@Body() emailRequest: IdRequest, @Res() res: Response) {
+  async read(@Body() idRequest: IdRequest, @Res() res: Response) {
     const response: DefaultResponseDto =
-      await this.orderService.read(emailRequest);
+      await this.orderService.read(idRequest);
     return res.status(response.status).json(response.data);
   }
 

@@ -14,8 +14,8 @@ export class CreateCartRequest {
   diffuserId: number;
 
   @ApiProperty({
-    example: '수량',
-    description: '1',
+    example: '3',
+    description: '수량',
   })
   quantity: number;
 }

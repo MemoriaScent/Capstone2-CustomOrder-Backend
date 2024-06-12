@@ -7,4 +7,3 @@ export class IdRequest {
   })
   userId: number;
 }
-

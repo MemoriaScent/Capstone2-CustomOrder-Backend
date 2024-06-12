@@ -21,8 +21,6 @@ export class OrderService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    // @InjectRepository(DeffuserEntity)
-    // private readonly diffuserRepository: Repository<DeffuserEntity>,
     @InjectRepository(OrderEntity)
     private readonly orderRepository: Repository<OrderEntity>,
     @InjectRepository(OrderDetailEntity)
@@ -75,7 +73,7 @@ export class OrderService {
         this.logger.debug(orderDetailEntity.diffuserId.id);
         await this.orderDetailRepository.save(orderDetailEntity);
       }
-      response.status = 200;
+      response.status = 201;
     } catch (error) {
       this.logger.warn(error);
       response.status = 500;
@@ -88,6 +86,7 @@ export class OrderService {
   // 주문 조회
   async read(idRequest: IdRequest): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
+
     const result = await this.orderRepository.find({
       relations: {
         userId: true,
@@ -99,7 +98,6 @@ export class OrderService {
       },
     });
 
-    this.logger.error(result);
     if (result && result.length > 0) {
       response.status = 200;
       response.data = result;

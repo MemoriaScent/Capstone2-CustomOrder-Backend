@@ -27,6 +27,8 @@ export class OrderService {
     private readonly orderDetailRepository: Repository<OrderDetailEntity>,
     @InjectRepository(OrderCancelEntity)
     private readonly orderCancelEntityRepository: Repository<OrderCancelEntity>,
+    @InjectRepository(DiffuserEntity)
+    private readonly diffuserRepository: Repository<DiffuserEntity>,
     private readonly logger: Logger,
   ) {}
 
@@ -114,19 +116,21 @@ export class OrderService {
   ): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
-    // 주문 상세 번호로 조회
-    const result = await this.orderRepository.findOne({
-      where: { id: readOrderDetailRequest.orderDetailId },
+    const result = await this.orderDetailRepository.find({
+      relations: {
+        order: true,
+        diffuserId: true,
+      },
+      where: {
+        order: {
+          id: readOrderDetailRequest.orderId,
+        },
+      },
     });
-
-    // 주문자 정보 추가하여 res 필요 =====
 
     if (!result) {
       response.status = 204;
       response.data = { msg: '주문한 상세 내역이 없습니다.' };
-    } else if (readOrderDetailRequest.userId != result.userId.id) {
-      response.status = 403;
-      response.data = { msg: '해당 내역을 주문한 회원이 아닙니다.' };
     } else {
       response.status = 200;
       response.data = result;

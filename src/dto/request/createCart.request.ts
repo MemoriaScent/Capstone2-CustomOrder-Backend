@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCartRequest {
   @ApiProperty({
-    example: '1234@memoria.kr',
-    description: '이메일',
+    example: '1',
+    description: '사용자 고유 번호',
   })
-  email: string;
+  userId: number;
 
   @ApiProperty({
     example: '1',

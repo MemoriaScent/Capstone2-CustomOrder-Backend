@@ -26,7 +26,7 @@ export class CartService {
 
     // 사용자와 디퓨저를 데이터베이스에서 찾기
     const user = await this.userRepository.findOne({
-      where: { email: createCartRequest.email },
+      where: { id: createCartRequest.userId },
     });
     const diffuser = await this.diffuserRepository.findOne({
       where: { id: +createCartRequest.diffuserId },
@@ -70,6 +70,13 @@ export class CartService {
     const userE = await this.userRepository.find({
       where: { id: idRequest.userId },
     });
+    this.logger.warn(userE);
+
+    if (userE.length == 0) {
+      response.status = 404;
+      response.data = { msg: '해당 사용자가 없습니다.' };
+      return response;
+    }
 
     const result = await this.cartRepository.find({
       where: { user: userE },
@@ -79,11 +86,9 @@ export class CartService {
       response.status = 200;
       response.data = { user: userE, diffuser: result };
     } else {
-      response.status = 204;
+      response.status = 200;
       response.data = { msg: '장바구니에 담은 내역이 없습니다.' };
     }
     return response;
   }
-
-  //async read()
 }

@@ -50,9 +50,9 @@ export class CartController {
     status: 404,
     description: '사용자의 장바구니 조회에 실패했습니다.',
   })
-  async read(@Body() emailRequest: IdRequest, @Res() res: Response) {
+  async read(@Body() idRequest: IdRequest, @Res() res: Response) {
     const response: DefaultResponseDto =
-      await this.cartService.read(emailRequest);
+      await this.cartService.read(idRequest);
     return res.status(response.status).json(response.data);
   }
 }

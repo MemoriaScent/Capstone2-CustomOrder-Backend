@@ -6,6 +6,7 @@ import { OrderService } from './order.service';
 import { UserEntity } from '../entity/user.entity';
 import { OrderDetailEntity } from '../entity/orderDetail.entity';
 import { OrderCancelEntity } from '../entity/orderCancel.entity';
+import { DiffuserEntity } from "../entity/diffuser.entity";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { OrderCancelEntity } from '../entity/orderCancel.entity';
       OrderEntity,
       OrderDetailEntity,
       OrderCancelEntity,
+      DiffuserEntity,
     ]),
   ],
   controllers: [OrderController],

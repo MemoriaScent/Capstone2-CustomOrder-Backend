@@ -18,4 +18,12 @@ export class AuthService {
       },
     );
   }
+  
+  async tokenValidate(token){
+    console.log(token)
+    const id = await this.jwtService.decode(token.token);
+    console.log(id.email)
+
+    return id.email;
+  }
 }

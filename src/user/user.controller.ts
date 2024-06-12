@@ -18,6 +18,13 @@ export class UserController {
     private authService: AuthService
   ) {}
 
+  @Post('/validate')
+  @ApiOperation({ summary: 'token 조회', description: 'token으로 사용자 email 조회' })
+  async validate(@Body() body){
+    const vali=await this.authService.tokenValidate(body);
+    return vali;
+  }
+
   @Post('/register')
   @ApiOperation({ summary: '회원 가입', description: '새로운 사용자 정보를 추가합니다' })
   @ApiResponse({ status: 201, description: '회원 가입에 성공했습니다.' })

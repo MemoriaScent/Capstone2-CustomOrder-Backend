@@ -99,7 +99,7 @@ export class UserController {
     const result = await this.userService.reviewPost(reviewDto);
 
     if(result){
-      return response.status(200).json('{ data: 리뷰가 정상적으로 작성되었습니다. }');
+      return response.status(200).json('리뷰가 정상적으로 작성되었습니다.');
     }
     throw new ForbiddenException('리뷰가 정상적으로 작성되지 않았습니다.')
   }

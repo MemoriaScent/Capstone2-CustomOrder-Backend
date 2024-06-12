@@ -9,6 +9,7 @@ import { DuplicationEmailRequest } from 'src/dto/request/duplication-email.reque
 import { AddReviewRequest } from 'src/dto/request/add-review.request';
 import { DeleteReviewRequest } from 'src/dto/request/delete-review.request';
 import { UserEntity } from 'src/entity/user.entity';
+import { TokenRequest } from 'src/dto/request/token.request';
 
 @ApiTags('사용자 API')
 @Controller('user')
@@ -17,13 +18,6 @@ export class UserController {
     private userService: UserService,
     private authService: AuthService
   ) {}
-
-  @Post('/validate')
-  @ApiOperation({ summary: 'token 조회', description: 'token으로 사용자 email 조회' })
-  async validate(@Body() body){
-    const vali=await this.authService.tokenValidate(body);
-    return vali;
-  }
 
   @Post('/register')
   @ApiOperation({ summary: '회원 가입', description: '새로운 사용자 정보를 추가합니다' })
@@ -69,9 +63,10 @@ export class UserController {
   @ApiOperation({ summary: '개인 정보 확인', description: '사용자의 개인 정보를 가져옵니다' })
   @ApiResponse({ status: 200, description: '사용자의 email, 주소, 전화번호를 가져옵니다. ' })
   @ApiResponse({ status: 404, description: '조회되는 사용자가 없습니다.' })
-  async userinfo(@Query() req: DuplicationEmailRequest, @Res() response:Response){
+  async userinfo(@Query() req:TokenRequest, @Res() response:Response){
 
-    const user = await this.userService.userFind(req.email);
+    const email = await this.authService.tokenValidate(req);
+    const user = await this.userService.userFind(email);
     
     if(user!==null){
       return response.status(200).json( user );

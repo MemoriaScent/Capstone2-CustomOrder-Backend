@@ -27,7 +27,8 @@ export class TossService {
     this.secretKey = this.configService.get<string>('TOSS_SECRET_KEY');
   }
 
-  async confirmPayment(paymentInfo: ConfirmPaymentsRequest) {
+  // 결제 승인 요청
+  async confirmPayment(id: number, paymentInfo: ConfirmPaymentsRequest) {
     const responseDto = new DefaultResponseDto();
     const encryptedSecretKey =
       'Basic ' + Buffer.from(this.secretKey + ':').toString('base64');
@@ -44,14 +45,15 @@ export class TossService {
         },
       );
 
-      this.logger.log(`Payments API Requested by ${paymentInfo.email}`);
+      this.logger.log(`Payments API Requested by ${id}`);
       // 필요 데이터 저장
 
       let tossEntity: TossEntity = new TossEntity();
       tossEntity = response.data;
 
       const paymentRecord: PaymentRecordEntity = new PaymentRecordEntity();
-      paymentRecord.email = paymentInfo.email;
+
+      paymentRecord.email = id;
       paymentRecord.amount = paymentInfo.amount;
       paymentRecord.tossEntity = tossEntity;
 
@@ -63,7 +65,7 @@ export class TossService {
     } catch (e) {
       if (e.name === 'AxiosError') {
         this.logger.log(
-          `TossPayment Error : ${e.response.data.code} (at ${paymentInfo.email})`,
+          `TossPayment Error : ${e.response.data.code} (at ${id})`,
         );
         responseDto.status = e.response.status;
         responseDto.data = e.response.data;

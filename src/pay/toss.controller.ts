@@ -1,5 +1,5 @@
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Ip, Logger, Post, Res } from '@nestjs/common';
+import { Body, Controller, Headers, Ip, Logger, Post, Req, Res } from "@nestjs/common";
 import { TossService } from './toss.service';
 import { ConfirmPaymentsRequest } from '../dto/request/confirmPaymentsRequest';
 import { Response } from 'express';
@@ -15,8 +15,8 @@ export class TossController {
 
   @Post()
   @ApiOperation({
-    summary: '결제 승인',
-    description: '주문을 생성합니다.',
+    summary: '결제 승인 요청',
+    description: '결제를 요청합니다.',
   })
   @ApiResponse({
     status: 200,
@@ -28,11 +28,12 @@ export class TossController {
       '"https://docs.tosspayments.com/reference/error-codes#%EA%B2%B0%EC%A0%9C-%EC%8A%B9%EC%9D%B8" 사이트 참고.',
   })
   async confirmPayment(
+    @Headers('id') id: string,
     @Body() paymentInfo: ConfirmPaymentsRequest,
     @Res() res: Response,
   ): Promise<Response> {
     const result: DefaultResponseDto =
-      await this.tossService.confirmPayment(paymentInfo);
+      await this.tossService.confirmPayment(Number(id), paymentInfo);
     return res.status(result.status).json(result.data);
   }
 }

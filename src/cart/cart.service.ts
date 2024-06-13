@@ -21,12 +21,12 @@ export class CartService {
     private readonly logger: Logger,
   ) {}
 
-  async create(createCartRequest: CreateCartRequest) {
+  async create(id: number, createCartRequest: CreateCartRequest) {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
     // 사용자와 디퓨저를 데이터베이스에서 찾기
     const user = await this.userRepository.findOne({
-      where: { id: createCartRequest.userId },
+      where: { id: id },
     });
     const diffuser = await this.diffuserRepository.findOne({
       where: { id: +createCartRequest.diffuserId },
@@ -64,11 +64,11 @@ export class CartService {
   }
 
   // 장바구니 페이지 불러오기
-  async read(idRequest: IdRequest): Promise<DefaultResponseDto> {
+  async read(id: number): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
     const userE = await this.userRepository.find({
-      where: { id: idRequest.userId },
+      where: { id: id },
     });
     this.logger.warn(userE);
 

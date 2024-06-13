@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Logger, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  Logger,
+  Post,
+  Res,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
@@ -25,11 +33,14 @@ export class CartController {
     description: '해당 사용자 또는 디퓨저를 찾지 못했습니다.',
   })
   async create(
+    @Headers('id') id: string,
     @Body() createCartRequest: CreateCartRequest,
     @Res() res: Response,
   ) {
-    const response: DefaultResponseDto =
-      await this.cartService.create(createCartRequest);
+    const response: DefaultResponseDto = await this.cartService.create(
+      Number(id),
+      createCartRequest,
+    );
     return res.status(response.status).json(response.data);
   }
 
@@ -50,9 +61,10 @@ export class CartController {
     status: 404,
     description: '사용자의 장바구니 조회에 실패했습니다.',
   })
-  async read(@Body() idRequest: IdRequest, @Res() res: Response) {
-    const response: DefaultResponseDto =
-      await this.cartService.read(idRequest);
+  async read(@Headers('id') id: string, @Res() res: Response) {
+    const response: DefaultResponseDto = await this.cartService.read(
+      Number(id),
+    );
     return res.status(response.status).json(response.data);
   }
 }

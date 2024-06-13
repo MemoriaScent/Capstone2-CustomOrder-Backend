@@ -11,11 +11,9 @@ import { UserEntity } from '../entity/user.entity';
 import { OrderDetailEntity } from '../entity/orderDetail.entity';
 import { ReadOrderDetailRequest } from '../dto/request/read-orderDetail.request';
 import { CreateOrderCancelRequest } from '../dto/request/create-orderCancel.request';
-import { IdRequest } from '../dto/request/id.request';
 import { CreateOrderRequest } from '../dto/request/createOrder.request';
 import { DiffuserEntity } from '../entity/diffuser.entity';
 import { OrderCancelEntity } from '../entity/orderCancel.entity';
-import { AuthService } from "../auth/auth.service";
 
 @Injectable()
 export class OrderService {
@@ -35,13 +33,14 @@ export class OrderService {
 
   // 주문 저장
   async create(
+    id: number,
     createOrderRequest: CreateOrderRequest,
   ): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
     try {
       // 사용자 확인
       const user = await this.userRepository.findOne({
-        where: { id: createOrderRequest.userId },
+        where: { id: id },
       });
 
       if (!user) {
@@ -87,7 +86,7 @@ export class OrderService {
   }
 
   // 주문 조회
-  async read(idRequest: IdRequest): Promise<DefaultResponseDto> {
+  async read(id: number): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
     const result = await this.orderRepository.find({
@@ -96,7 +95,7 @@ export class OrderService {
       },
       where: {
         userId: {
-          id: idRequest.userId,
+          id: id,
         },
       },
     });
@@ -112,6 +111,7 @@ export class OrderService {
 
   // 주문 상세 조회
   async readDetail(
+    id: number,
     readOrderDetailRequest: ReadOrderDetailRequest,
   ): Promise<DefaultResponseDto> {
     const response: DefaultResponseDto = new DefaultResponseDto();
@@ -139,6 +139,7 @@ export class OrderService {
   }
 
   async orderCancel(
+    id: number,
     createOrderCancelRequest: CreateOrderCancelRequest,
   ): Promise<number> {
     const orderEntity = new OrderEntity();

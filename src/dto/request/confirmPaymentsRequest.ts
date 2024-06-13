@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Headers } from "@nestjs/common";
 
 export class ConfirmPaymentsRequest {
   @ApiProperty({
@@ -6,12 +7,6 @@ export class ConfirmPaymentsRequest {
     description: '주문 번호',
   })
   orderId: string;
-
-  @ApiProperty({
-    example: '000001',
-    description: '사용자 이메일',
-  })
-  email: string;
 
   @ApiProperty({
     example: 'NORMAL',

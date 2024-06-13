@@ -59,8 +59,6 @@ export class DiffuserController {
   }
 
   //일반 디퓨저 정보
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
   @Get('')
   @ApiOperation({
     summary: '디퓨저 정보 가져오기',

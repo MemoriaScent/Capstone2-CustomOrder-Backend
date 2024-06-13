@@ -14,6 +14,7 @@ async function bootstrap() {
     .setTitle('Swagger')
     .setDescription('API description')
     .addTag('swagger')
+    .addBearerAuth()
     .build();
 
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);

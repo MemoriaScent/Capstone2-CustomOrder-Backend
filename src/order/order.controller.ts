@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Logger, Post, Req, Res, Headers } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Post,
+  Res,
+  Headers,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
@@ -6,9 +15,11 @@ import { OrderService } from './order.service';
 import { ReadOrderDetailRequest } from '../dto/request/read-orderDetail.request';
 import { CreateOrderCancelRequest } from '../dto/request/create-orderCancel.request';
 import { CreateOrderRequest } from '../dto/request/createOrder.request';
+import { AuthGuard } from '../auth/auth.guard';
 
 @ApiTags('주문 API')
 @Controller('order')
+@UseGuards(AuthGuard)
 export class OrderController {
   constructor(
     private readonly orderService: OrderService,
@@ -27,12 +38,14 @@ export class OrderController {
     description: '주문을 저장하는 동안 오류가 발생했습니다.',
   })
   async create(
-    @Headers('id') id: string,
+    @Headers('id') id,
     @Body() createOrderRequest: CreateOrderRequest,
     @Res() res: Response,
   ) {
-    const response: DefaultResponseDto =
-      await this.orderService.create(Number(id), createOrderRequest);
+    const response: DefaultResponseDto = await this.orderService.create(
+      Number(id),
+      createOrderRequest,
+    );
     return res.status(response.status).json(response.data);
   }
 
@@ -40,12 +53,10 @@ export class OrderController {
   @ApiOperation({ summary: '주문 조회', description: '주문을 조회합니다.' })
   @ApiResponse({ status: 200, description: '주문한 내역이 존재합니다.' })
   @ApiResponse({ status: 204, description: '주문한 내역이 없습니다.' })
-  async read(
-    @Headers('id') id: string,
-    @Res() res: Response,
-  ) {
-    const response: DefaultResponseDto =
-      await this.orderService.read(Number(id));
+  async read(@Headers('id') id: string, @Res() res: Response) {
+    const response: DefaultResponseDto = await this.orderService.read(
+      Number(id),
+    );
     return res.status(response.status).json(response.data);
   }
 
@@ -62,7 +73,8 @@ export class OrderController {
     @Res() res: Response,
   ) {
     const response: DefaultResponseDto = await this.orderService.readDetail(
-      Number(id), readOrderDetailRequest
+      Number(id),
+      readOrderDetailRequest,
     );
     if (response.status === 404) this.logger.error('주문 상세 조회 오류');
     return res.status(response.status).json(response.data);

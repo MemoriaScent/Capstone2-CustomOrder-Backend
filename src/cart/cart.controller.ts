@@ -5,17 +5,18 @@ import {
   Headers,
   Logger,
   Post,
-  Res,
-} from '@nestjs/common';
+  Res, UseGuards
+} from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
-import { IdRequest } from '../dto/request/id.request';
 import { CartService } from './cart.service';
 import { CreateCartRequest } from '../dto/request/createCart.request';
+import { AuthGuard } from "../auth/auth.guard";
 
 @ApiTags('장바구니 API')
 @Controller('cart')
+@UseGuards(AuthGuard)
 export class CartController {
   constructor(
     private readonly cartService: CartService,
@@ -37,6 +38,9 @@ export class CartController {
     @Body() createCartRequest: CreateCartRequest,
     @Res() res: Response,
   ) {
+    this.logger.debug(id);
+    this.logger.debug(typeof id);
+
     const response: DefaultResponseDto = await this.cartService.create(
       Number(id),
       createCartRequest,

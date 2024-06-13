@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DiffuserService } from './diffuser.service';
 import { DiffuserController } from './diffuser.controller';
 import { DiffuserEntity } from 'src/entity/diffuser.entity';
-import { CustomDeffuserEntity } from 'src/entity/customDeffuser.entity';
+import { CustomDiffuserEntity } from 'src/entity/customDiffuserEntity';
 import { UserEntity } from 'src/entity/user.entity';
 import { ReviewEntity } from 'src/entity/review.entity';
 import { JwtService } from "@nestjs/jwt";
@@ -12,7 +12,7 @@ import { JwtService } from "@nestjs/jwt";
   imports: [
     TypeOrmModule.forFeature([
       DiffuserEntity,
-      CustomDeffuserEntity,
+      CustomDiffuserEntity,
       UserEntity,
       ReviewEntity,
     ]),

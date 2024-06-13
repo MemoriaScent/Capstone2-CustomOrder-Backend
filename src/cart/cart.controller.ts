@@ -5,14 +5,15 @@ import {
   Headers,
   Logger,
   Post,
-  Res, UseGuards
-} from "@nestjs/common";
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { CartService } from './cart.service';
 import { CreateCartRequest } from '../dto/request/createCart.request';
-import { AuthGuard } from "../auth/auth.guard";
+import { AuthGuard } from '../auth/auth.guard';
 
 @ApiTags('장바구니 API')
 @Controller('cart')

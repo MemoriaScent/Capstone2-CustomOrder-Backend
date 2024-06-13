@@ -6,13 +6,14 @@ import {
   Res,
   Get,
   Logger,
+  Headers,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DefaultResponseDto } from 'src/dto/response/default.response';
 import { DiffuserService } from './diffuser.service';
 import { Response } from 'express';
-import { AddDeffuserRequest } from 'src/dto/request/add-deffuser.request';
-import { AddCustomDeffuserRequest } from 'src/dto/request/add-customDeffuser.request';
+import { AddDiffuserRequest } from 'src/dto/request/add-diffuser.request';
+import { AddCustomDiffuserRequest } from 'src/dto/request/add-custom-diffuser.request';
 
 @ApiTags('디퓨저 API')
 @Controller('diffuser')
@@ -36,12 +37,12 @@ export class DiffuserController {
     status: 404,
     description: '새로운 디퓨저의 상품 정보를 추가하지 못했습니다.',
   })
-  async addDeffuser(
-    @Body() deffuserDto: AddDeffuserRequest,
+  async addDiffuser(
+    @Body() diffuserDto: AddDiffuserRequest,
     @Res() response: Response,
   ) {
     const res: DefaultResponseDto =
-      await this.diffuserService.addDiffuser(deffuserDto);
+      await this.diffuserService.addDiffuser(diffuserDto);
 
     if (res.status === 201) {
       return response
@@ -65,8 +66,8 @@ export class DiffuserController {
     status: 404,
     description: '저장된 디퓨저 정보를 불러오지 못했습니다.',
   })
-  async getDeffuser() {
-    const data = await this.diffuserService.getDeffuser();
+  async getDiffuser() {
+    const data = await this.diffuserService.getDiffuser();
 
     if (data !== null) {
       return data;
@@ -89,12 +90,13 @@ export class DiffuserController {
     status: 404,
     description: '새로운 커스텀 디퓨저 상품 정보를 추가하지 못했습니다.',
   })
-  async addCustomDeffuser(
-    @Body() customDeffuserDto: AddCustomDeffuserRequest,
+  async addCustomDiffuser(
+    @Headers('id') id: number,
+    @Body() customDiffuserDto: AddCustomDiffuserRequest,
     @Res() response: Response,
   ) {
     const res: DefaultResponseDto =
-      await this.diffuserService.addCustomDeffuser(customDeffuserDto);
+      await this.diffuserService.addCustomDiffuser(id, customDiffuserDto);
 
     if (res.status === 201) {
       return response
@@ -121,8 +123,8 @@ export class DiffuserController {
     status: 404,
     description: '저장된 커스텀 디퓨저 상품 정보를 불러오지 못했습니다.',
   })
-  async getCustomDeffuser() {
-    const data = await this.diffuserService.getCustomDeffuser();
+  async getCustomDiffuser() {
+    const data = await this.diffuserService.getCustomDiffuser();
 
     if (data !== null) {
       return data;

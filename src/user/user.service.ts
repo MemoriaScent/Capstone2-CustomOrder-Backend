@@ -59,18 +59,22 @@ export class UserService {
     return response;
   }
 
-  async update(id,userDto){
+  async update(id, userDto) {
     console.log(userDto);
-    const user= await this.userRepository.update(id,userDto);
+    const user = await this.userRepository.update(id, userDto);
     console.log(user);
     return user;
-
   }
 
-
   // 리뷰 작성
-  async reviewPost(body) {
+  async reviewPost(id: number, body) {
     const res: DefaultResponseDto = new DefaultResponseDto();
+    const user: UserEntity = await this.userRepository.findOne({
+      where: { id: id },
+    });
+
+    const reviewEntity: ReviewEntity = body;
+    reviewEntity.userEntity = user;
 
     const write = await this.reviewRepository.save(body);
 
@@ -81,12 +85,16 @@ export class UserService {
   }
 
   //리뷰 삭제
-  async reviewDelete(body) {
+  async reviewDelete(id: number, body) {
     const response: DefaultResponseDto = new DefaultResponseDto();
+
+    const user: UserEntity = await this.userRepository.findOne({
+      where: { id: id },
+    });
 
     const findReview = await this.reviewRepository.findOneBy({
       id: body.id,
-      userId: body.userId,
+      userEntity: user,
     });
 
     const deleteReview = await this.reviewRepository.delete(findReview);

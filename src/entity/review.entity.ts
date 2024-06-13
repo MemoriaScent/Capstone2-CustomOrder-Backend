@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
+import { UserEntity } from "./user.entity";
 
 @Entity()
 export class ReviewEntity extends DefaultEntity {
@@ -8,8 +9,9 @@ export class ReviewEntity extends DefaultEntity {
     example: '1',
     description: '사용자 고유 번호',
   })
-  @Column()
-  userId: string;
+  @ManyToOne(() => UserEntity, (u: UserEntity) => u.id)
+  @JoinColumn()
+  userEntity: UserEntity;
 
   @ApiProperty({
     example: '1',

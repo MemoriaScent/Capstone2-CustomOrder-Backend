@@ -1,23 +1,26 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DefaultResponseDto } from 'src/dto/response/default.response';
-import { CustomDeffuserEntity } from 'src/entity/customDeffuser.entity';
+import { CustomDiffuserEntity } from 'src/entity/customDiffuserEntity';
 import { DiffuserEntity } from 'src/entity/diffuser.entity';
 import { Repository } from 'typeorm';
-import { AddDeffuserRequest } from "../dto/request/add-deffuser.request";
+import { AddDiffuserRequest } from '../dto/request/add-diffuser.request';
+import { UserEntity } from '../entity/user.entity';
 
 @Injectable()
 export class DiffuserService {
   constructor(
     @InjectRepository(DiffuserEntity)
     private diffuserRepository: Repository<DiffuserEntity>,
-    @InjectRepository(CustomDeffuserEntity)
-    private customDiffuserRepository: Repository<CustomDeffuserEntity>,
+    @InjectRepository(CustomDiffuserEntity)
+    private customDiffuserRepository: Repository<CustomDiffuserEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userEntityRepository: Repository<UserEntity>,
     private readonly logger: Logger,
   ) {}
 
   //일반 디퓨저 정보 저장
-  async addDiffuser(body: AddDeffuserRequest) {
+  async addDiffuser(body: AddDiffuserRequest) {
     const diffuserEntity: DiffuserEntity = new DiffuserEntity();
     diffuserEntity.Name = body.Name;
     diffuserEntity.Image = body.Image;
@@ -34,28 +37,36 @@ export class DiffuserService {
   }
 
   //일반 디퓨저 정보 가져오기
-  async getDeffuser() {
+  async getDiffuser() {
     const res: DefaultResponseDto = new DefaultResponseDto();
 
-    const deffuserData = await this.diffuserRepository.find();
+    const diffuserData = await this.diffuserRepository.find();
 
-    if (deffuserData == null) {
+    if (diffuserData == null) {
       res.status = 404;
       return res;
     }
 
-    return deffuserData;
+    return diffuserData;
   }
 
   //커스텀 디퓨저 저장
-  async addCustomDeffuser(body) {
+  async addCustomDiffuser(id: number, body) {
     const res: DefaultResponseDto = new DefaultResponseDto();
 
-    const addCustomDeffuser = await this.customDiffuserRepository.save(body);
+    let customDiffuserEntity: CustomDiffuserEntity = new CustomDiffuserEntity();
+    customDiffuserEntity = body;
 
-    res.status = addCustomDeffuser ? 201 : 404;
+    const userEntity: UserEntity = await this.userEntityRepository.findOne({
+      where: { id: id },
+    });
 
-    res.data = addCustomDeffuser
+    customDiffuserEntity.userEntity = userEntity;
+    const addCustomDiffuser = await this.customDiffuserRepository.save(body);
+
+    res.status = addCustomDiffuser ? 201 : 404;
+
+    res.data = addCustomDiffuser
       ? { message: '실행 완료' }
       : { message: '오류' };
 
@@ -63,16 +74,16 @@ export class DiffuserService {
   }
 
   //커스텀 디퓨저 정보 가져오기
-  async getCustomDeffuser() {
+  async getCustomDiffuser() {
     const res: DefaultResponseDto = new DefaultResponseDto();
 
-    const customDeffuserData = await this.customDiffuserRepository.find();
+    const customDiffuserData = await this.customDiffuserRepository.find();
 
-    if (customDeffuserData == null) {
+    if (customDiffuserData == null) {
       res.status = 404;
       return res;
     }
 
-    return customDeffuserData;
+    return customDiffuserData;
   }
 }

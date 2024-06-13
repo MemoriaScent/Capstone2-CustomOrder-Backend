@@ -12,7 +12,7 @@ import { OrderDetailEntity } from './entity/orderDetail.entity';
 import { DiffuserEntity } from './entity/diffuser.entity';
 import { ReviewEntity } from './entity/review.entity';
 import { DiffuserModule } from './diffuser/diffuser.module';
-import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
+import { CustomDiffuserEntity } from './entity/customDiffuserEntity';
 import { CartEntity } from './entity/cart.entity';
 import { CartModule } from './cart/cart.module';
 import { OrderCancelEntity } from './entity/orderCancel.entity';
@@ -44,7 +44,7 @@ import { JwtService } from "@nestjs/jwt";
       database: process.env.DB_DATABASE,
       entities: [
         CartEntity,
-        CustomDeffuserEntity,
+        CustomDiffuserEntity,
         DiffuserEntity,
         OrderEntity,
         OrderCancelEntity,

@@ -1,6 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
+import { IsEmail, IsNumberString, IsString } from 'class-validator';
 
 @Entity()
 export class UserEntity extends DefaultEntity {
@@ -9,6 +10,7 @@ export class UserEntity extends DefaultEntity {
     description: '로그인 메일',
   })
   @Column()
+  @IsEmail()
   email: string;
 
   @ApiProperty({
@@ -16,12 +18,14 @@ export class UserEntity extends DefaultEntity {
     description: '비밀번호',
   })
   @Column()
+  @IsString()
   pw: string;
 
   @ApiProperty({
     example: '홍길동',
     description: '이름',
   })
+  @IsString()
   @Column()
   name: string;
 
@@ -30,6 +34,7 @@ export class UserEntity extends DefaultEntity {
     description: '전화번호',
   })
   @Column()
+  @IsNumberString()
   phone: string;
 
   @ApiProperty({
@@ -37,5 +42,6 @@ export class UserEntity extends DefaultEntity {
     description: '주소',
   })
   @Column()
+  @IsString()
   location: string;
 }

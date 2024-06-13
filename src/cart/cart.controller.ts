@@ -34,13 +34,10 @@ export class CartController {
     description: '해당 사용자 또는 디퓨저를 찾지 못했습니다.',
   })
   async create(
-    @Headers('id') id: string,
+    @Headers('id') id: number,
     @Body() createCartRequest: CreateCartRequest,
     @Res() res: Response,
   ) {
-    this.logger.debug(id);
-    this.logger.debug(typeof id);
-
     const response: DefaultResponseDto = await this.cartService.create(
       Number(id),
       createCartRequest,
@@ -65,7 +62,7 @@ export class CartController {
     status: 404,
     description: '사용자의 장바구니 조회에 실패했습니다.',
   })
-  async read(@Headers('id') id: string, @Res() res: Response) {
+  async read(@Headers('id') id: number, @Res() res: Response) {
     const response: DefaultResponseDto = await this.cartService.read(
       Number(id),
     );

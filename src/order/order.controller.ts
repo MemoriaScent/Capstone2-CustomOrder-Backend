@@ -38,7 +38,7 @@ export class OrderController {
     description: '주문을 저장하는 동안 오류가 발생했습니다.',
   })
   async create(
-    @Headers('id') id,
+    @Headers('id') id: number,
     @Body() createOrderRequest: CreateOrderRequest,
     @Res() res: Response,
   ) {
@@ -53,7 +53,7 @@ export class OrderController {
   @ApiOperation({ summary: '주문 조회', description: '주문을 조회합니다.' })
   @ApiResponse({ status: 200, description: '주문한 내역이 존재합니다.' })
   @ApiResponse({ status: 204, description: '주문한 내역이 없습니다.' })
-  async read(@Headers('id') id: string, @Res() res: Response) {
+  async read(@Headers('id') id: number, @Res() res: Response) {
     const response: DefaultResponseDto = await this.orderService.read(
       Number(id),
     );
@@ -68,7 +68,7 @@ export class OrderController {
   @ApiResponse({ status: 200, description: '주문 상세 조회에 성공했습니다.' })
   @ApiResponse({ status: 404, description: '주문 상세 조회에 실패했습니다.' })
   async readDetail(
-    @Headers('id') id: string,
+    @Headers('id') id: number,
     @Body() readOrderDetailRequest: ReadOrderDetailRequest,
     @Res() res: Response,
   ) {
@@ -88,7 +88,7 @@ export class OrderController {
   @ApiResponse({ status: 201, description: '주문 취소에 성공했습니다.' })
   @ApiResponse({ status: 500, description: '주문 취소에 실패했습니다.' })
   async orderCancel(
-    @Headers('id') id: string,
+    @Headers('id') id: number,
     @Body() createOrderCancelRequest: CreateOrderCancelRequest,
   ) {
     return this.orderService.orderCancel(Number(id), createOrderCancelRequest);

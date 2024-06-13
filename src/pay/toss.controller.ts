@@ -28,7 +28,7 @@ export class TossController {
       '"https://docs.tosspayments.com/reference/error-codes#%EA%B2%B0%EC%A0%9C-%EC%8A%B9%EC%9D%B8" 사이트 참고.',
   })
   async confirmPayment(
-    @Headers('id') id: string,
+    @Headers('id') id: number,
     @Body() paymentInfo: ConfirmPaymentsRequest,
     @Res() res: Response,
   ): Promise<Response> {

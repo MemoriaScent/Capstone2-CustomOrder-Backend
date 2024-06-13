@@ -8,7 +8,7 @@ import {
   Headers,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { OrderService } from './order.service';
@@ -20,6 +20,7 @@ import { AuthGuard } from '../auth/auth.guard';
 @ApiTags('주문 API')
 @Controller('order')
 @UseGuards(AuthGuard)
+@ApiBearerAuth()
 export class OrderController {
   constructor(
     private readonly orderService: OrderService,

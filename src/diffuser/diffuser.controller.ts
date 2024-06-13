@@ -6,14 +6,15 @@ import {
   Res,
   Get,
   Logger,
-  Headers,
-} from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+  Headers, UseGuards
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { DefaultResponseDto } from 'src/dto/response/default.response';
 import { DiffuserService } from './diffuser.service';
 import { Response } from 'express';
 import { AddDiffuserRequest } from 'src/dto/request/add-diffuser.request';
 import { AddCustomDiffuserRequest } from 'src/dto/request/add-custom-diffuser.request';
+import { AuthGuard } from "../auth/auth.guard";
 
 @ApiTags('디퓨저 API')
 @Controller('diffuser')
@@ -23,6 +24,8 @@ export class DiffuserController {
     private readonly logger: Logger,
   ) {}
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   //일반 디퓨저 추가
   @Post('')
   @ApiOperation({
@@ -56,6 +59,8 @@ export class DiffuserController {
   }
 
   //일반 디퓨저 정보
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get('')
   @ApiOperation({
     summary: '디퓨저 정보 가져오기',
@@ -76,7 +81,10 @@ export class DiffuserController {
     throw new NotFoundException('저장된 디퓨저 정보를 불러오지 못했습니다.');
   }
 
+
   //커스텀 디퓨저 추가
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Post('/custom')
   @ApiOperation({
     summary: '커스텀 디퓨저 정보 추가',
@@ -110,6 +118,8 @@ export class DiffuserController {
   }
 
   //커스텀 디퓨저 정보
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get('/custom')
   @ApiOperation({
     summary: '커스텀 디퓨저 정보 가져오기',

@@ -18,6 +18,7 @@ import { CartModule } from './cart/cart.module';
 import { OrderCancelEntity } from './entity/orderCancel.entity';
 import { TossModule } from './pay/toss.module';
 import { TossEntity } from './entity/toss.entity';
+import { PaymentRecordEntity } from "./entity/paymentRecord.entity";
 
 //import process from 'process';
 
@@ -50,6 +51,8 @@ import { TossEntity } from './entity/toss.entity';
         ReviewEntity,
         TossEntity,
         UserEntity,
+        PaymentRecordEntity,
+        TossEntity
       ],
       synchronize: true,
     }),

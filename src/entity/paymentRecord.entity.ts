@@ -1,8 +1,9 @@
 import { DefaultEntity } from './default.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, OneToOne } from 'typeorm';
+import { Column, Entity, OneToOne } from 'typeorm';
 import { TossEntity } from './toss.entity';
 
+@Entity()
 export class PaymentRecordEntity extends DefaultEntity {
   @ApiProperty({
     example: '000001',

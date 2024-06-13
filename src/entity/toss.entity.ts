@@ -190,21 +190,21 @@ export class TossEntity extends DefaultEntity {
     example: '',
     description: '결제 취소 이력입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   cancels: [];
 
   @ApiProperty({
     example: '',
     description: '카드로 결제하면 제공되는 카드 관련 정보입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   card: object;
 
   @ApiProperty({
     example: '',
     description: '가상계좌로 결제하면 제공되는 가상계좌 관련 정보입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   virtualAccount: object;
 
   @ApiProperty({
@@ -219,35 +219,35 @@ export class TossEntity extends DefaultEntity {
     example: '',
     description: '휴대폰으로 결제하면 제공되는 휴대폰 결제 관련 정보입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   mobilePhone: object;
 
   @ApiProperty({
     example: '',
     description: '상품권으로 결제하면 제공되는 상품권 결제 관련 정보입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   giftCertificate: object;
 
   @ApiProperty({
     example: '',
     description: '계좌이체로 결제했을 때 이체 정보가 담기는 객체입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   transfer: object;
 
   @ApiProperty({
     example: '',
     description: '발행된 영수증 정보입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   receipt: object;
 
   @ApiProperty({
     example: '',
     description: '결제창 정보입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   checkout: object;
 
   @ApiProperty({
@@ -255,7 +255,7 @@ export class TossEntity extends DefaultEntity {
     description:
       '간편결제 정보입니다. 고객이 선택한 결제수단에 따라 amount, discountAmount가 달라집니다. 간편결제 응답 확인 가이드를 참고하세요.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text"})
   easyPay: object;
 
   @ApiProperty({
@@ -270,14 +270,14 @@ export class TossEntity extends DefaultEntity {
     description:
       '결제 승인에 실패하면 응답으로 받는 에러 객체입니다. 실패한 결제를 조회할 때 확인할 수 있습니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   failure: object;
 
   @ApiProperty({
     example: '',
     description: '현금영수증 정보입니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   cashReceipt: object;
 
   @ApiProperty({
@@ -285,7 +285,7 @@ export class TossEntity extends DefaultEntity {
     description:
       '현금영수증 발행 및 취소 이력이 담기는 배열입니다. 순서는 보장되지 않습니다. 예를 들어 결제 후 부분 취소가 여러 번 일어나면 모든 결제 및 부분 취소 건에 대한 현금영수증 정보를 담고 있습니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   cashReceipts: object;
 
   @ApiProperty({
@@ -293,6 +293,6 @@ export class TossEntity extends DefaultEntity {
     description:
       '카드사의 즉시 할인 프로모션 정보입니다. 즉시 할인 프로모션이 적용됐을 때만 생성됩니다.',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   discount: object;
 }

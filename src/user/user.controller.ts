@@ -6,22 +6,19 @@ import {
   Post,
   Headers,
   Res,
-  Query,
   Delete,
   UnprocessableEntityException,
   HttpCode,
   UseGuards,
-  NotFoundException,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { Response } from 'express';
-import { DefaultResponseDto } from '../dto/response/default.response';
 import { AuthService } from 'src/auth/auth.service';
 import { DuplicationEmailRequest } from 'src/dto/request/duplication-email.request';
 import { AddReviewRequest } from 'src/dto/request/add-review.request';
 import { DeleteReviewRequest } from 'src/dto/request/delete-review.request';
-import { TokenRequest } from 'src/dto/request/token.request';
 import { UpdateUserRequest } from 'src/dto/request/update-user.request';
 import { UserEntity } from '../entity/user.entity';
 import { AuthGuard } from '../auth/auth.guard';

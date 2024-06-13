@@ -12,10 +12,9 @@ import { UserEntity } from '../entity/user.entity';
 import { ReviewEntity } from 'src/entity/review.entity';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { DefaultResponseDto } from '../dto/response/default.response';
-import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
 import { DeleteReviewRequest } from '../dto/request/delete-review.request';
-import { AddReviewRequest } from '../dto/request/add-review.request';
 import { DiffuserEntity } from '../entity/diffuser.entity';
+import { AddReviewRequest } from '../dto/request/add-review.request';
 
 @Injectable()
 export class UserService {
@@ -26,7 +25,6 @@ export class UserService {
     private reviewRepository: Repository<ReviewEntity>,
     @InjectRepository(DiffuserEntity)
     private diffuserEntityRepository: Repository<DiffuserEntity>,
-    private readonly reviewRepository: Repository<ReviewEntity>,
     private readonly logger: Logger,
   ) {}
 
@@ -81,7 +79,8 @@ export class UserService {
     return user;
   }
 
-  // 리뷰 작성 ==> ????
+  // 리뷰 작성 ==> ???? 이게; 여기 왜잇노;;;;;
+  async reviewPost(id: number, body: AddReviewRequest) {
     const res: DefaultResponseDto = new DefaultResponseDto();
     const reviewEntity: ReviewEntity = new ReviewEntity();
 
@@ -109,7 +108,7 @@ export class UserService {
 
   //리뷰 삭제
   async reviewDelete(body: DeleteReviewRequest) {
-  //리뷰 삭제 ==> ????
+    //리뷰 삭제 ==> ????
     const response: DefaultResponseDto = new DefaultResponseDto();
 
     const findReview = await this.reviewRepository.findOneBy({

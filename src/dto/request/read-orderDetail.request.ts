@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class ReadOrderDetailRequest {
   @ApiProperty({
-    example: '1',
+    example: 'QWERTY',
     description: '주문 번호',
   })
-  @IsInt()
-  orderId: number;
+  @IsString()
+  orderId: string;
 }

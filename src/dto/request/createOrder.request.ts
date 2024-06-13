@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt } from "class-validator";
+import { IsInt, IsString } from "class-validator";
 
 export class CreateOrderDetailRequest {
   @ApiProperty({
@@ -18,6 +18,13 @@ export class CreateOrderDetailRequest {
 }
 
 export class CreateOrderRequest {
+  @ApiProperty({
+    example: 'QWERTY',
+    description: '주문 번호',
+  })
+  @IsString()
+  orderId: string;
+
   @ApiProperty({
     example: 55000,
     description: '주문 총 가격',

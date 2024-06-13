@@ -16,7 +16,14 @@ export class OrderEntity extends DefaultEntity {
   })
   @ManyToOne(() => UserEntity, (u: UserEntity) => u.id)
   @JoinColumn()
-  userId: UserEntity;
+  user: UserEntity;
+
+  @ApiProperty({
+    example: 'QWERTY',
+    description: '주문 번호',
+  })
+  @Column()
+  orderId: string;
 
   @ApiProperty({
     example: '2024-01-01',

@@ -50,14 +50,11 @@ export class OrderService {
       }
       // 주문 생성
       let order = new OrderEntity();
-      order.userId = user;
-
+      order.user = user;
+      order.orderId = createOrderRequest.orderId;
       order.orderDate = new Date();
-
       order.price = Number(createOrderRequest.totalPrice); // 총 가격 설정
-
       order.orderPrice = Number(createOrderRequest.totalPrice) + 3000; // 배송비 포함 총 가격 설정
-
       order.status = '결제 완료';
       order.categoryAmount = createOrderRequest.orderItems.length; // 주문 아이템 수량 설정
 
@@ -91,10 +88,10 @@ export class OrderService {
 
     const result = await this.orderRepository.find({
       relations: {
-        userId: true,
+        user: true,
       },
       where: {
-        userId: {
+        user: {
           id: id,
         },
       },
@@ -123,7 +120,7 @@ export class OrderService {
       },
       where: {
         order: {
-          id: readOrderDetailRequest.orderId,
+          orderId: readOrderDetailRequest.orderId,
         },
       },
     });
@@ -143,7 +140,7 @@ export class OrderService {
     createOrderCancelRequest: CreateOrderCancelRequest,
   ): Promise<number> {
     const orderEntity = new OrderEntity();
-    orderEntity.id = createOrderCancelRequest.orderId;
+    orderEntity.orderId = createOrderCancelRequest.orderId;
 
     const orderCancelEntity = new OrderCancelEntity();
     orderCancelEntity.orderId = orderEntity;

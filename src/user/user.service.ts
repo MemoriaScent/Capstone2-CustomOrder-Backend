@@ -7,6 +7,8 @@ import { CreateUserRequest } from '../dto/request/create-user.request';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
 import { DeleteReviewRequest } from '../dto/request/delete-review.request';
+import { AddReviewRequest } from '../dto/request/add-review.request';
+import { DiffuserEntity } from '../entity/diffuser.entity';
 
 @Injectable()
 export class UserService {
@@ -15,8 +17,8 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
     @InjectRepository(ReviewEntity)
     private reviewRepository: Repository<ReviewEntity>,
-    // @InjectRepository (DeffuserEntity)
-    // private deffuserRepository: Repository<DeffuserEntity>,
+    @InjectRepository(DiffuserEntity)
+    private diffuserEntityRepository: Repository<DiffuserEntity>,
   ) {}
 
   // 이메일를 이용한 기존 사용자 찾기 - 로그인 확인
@@ -68,16 +70,25 @@ export class UserService {
   }
 
   // 리뷰 작성
-  async reviewPost(id: number, body) {
+  async reviewPost(id: number, body: AddReviewRequest) {
     const res: DefaultResponseDto = new DefaultResponseDto();
+    const reviewEntity: ReviewEntity = new ReviewEntity();
+
     const user: UserEntity = await this.userRepository.findOne({
       where: { id: id },
     });
 
-    const reviewEntity: ReviewEntity = body;
-    reviewEntity.userEntity = user;
+    const diffuser: DiffuserEntity =
+      await this.diffuserEntityRepository.findOne({
+        where: { id: body.diffuserId },
+      });
 
-    const write = await this.reviewRepository.save(body);
+    reviewEntity.rating = body.rating;
+    reviewEntity.detail = body.detail;
+    reviewEntity.diffuser = diffuser;
+    reviewEntity.user = user;
+
+    const write: ReviewEntity = await this.reviewRepository.save(reviewEntity);
 
     res.status = write ? 200 : 404;
     res.data = write ? { message: '실행 완료' } : { message: '오류' };

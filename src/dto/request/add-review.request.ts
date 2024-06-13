@@ -5,13 +5,13 @@ export class AddReviewRequest {
     example: '1',
     description: '디퓨저 고유 번호',
   })
-  diffuserId: string;
+  diffuserId: number;
 
   @ApiProperty({
     example: '4.5',
     description: '리뷰 평점',
   })
-  rating: string;
+  rating: number;
 
   @ApiProperty({
     example: '레몬 향 좋아요',

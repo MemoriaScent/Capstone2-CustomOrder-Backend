@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule, JwtService } from '@nestjs/jwt';
@@ -12,7 +12,8 @@ import { ReviewEntity } from '../entity/review.entity';
     JwtModule.register({}),
     TypeOrmModule.forFeature([UserEntity, ReviewEntity]),
   ],
-  providers: [AuthService, UserService, JwtService],
+  providers: [AuthService, UserService, JwtService, Logger],
   controllers: [AuthController],
+  exports: [Logger],
 })
 export class AuthModule {}

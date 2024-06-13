@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { JwtService, TokenExpiredError } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import * as process from 'process';
 
 @Injectable()
@@ -29,13 +29,12 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
       if (typeof decoded === 'object' && decoded.hasOwnProperty('sub')) {
-        request.headers.id = decoded.id;
+        request.headers.id = decoded.sub;
       }
       return true;
     } catch (e) {
-      if (e.name === TokenExpiredError) {
-        throw new UnauthorizedException('토큰이 만료되었습니다.');
-      }
+      this.logger.warn(`TokenExpired by ${request.ip}`);
+      throw new UnauthorizedException('토큰이 만료되었습니다.');
     }
   }
 }

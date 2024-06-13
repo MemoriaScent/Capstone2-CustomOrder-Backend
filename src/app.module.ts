@@ -15,7 +15,8 @@ import { DiffuserModule } from './diffuser/diffuser.module';
 import { CustomDeffuserEntity } from './entity/customDeffuser.entity';
 import { CartEntity } from './entity/cart.entity';
 import { CartModule } from './cart/cart.module';
-import { OrderCancelEntity } from "./entity/orderCancel.entity";
+import { OrderCancelEntity } from './entity/orderCancel.entity';
+import { JwtService } from "@nestjs/jwt";
 
 //import process from 'process';
 
@@ -55,7 +56,7 @@ import { OrderCancelEntity } from "./entity/orderCancel.entity";
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, Logger],
-  exports: [Logger]
+  providers: [AppService, Logger, JwtService],
+  exports: [Logger],
 })
 export class AppModule {}

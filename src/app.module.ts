@@ -52,7 +52,6 @@ import { PaymentRecordEntity } from "./entity/paymentRecord.entity";
         TossEntity,
         UserEntity,
         PaymentRecordEntity,
-        TossEntity
       ],
       synchronize: true,
     }),

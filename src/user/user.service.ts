@@ -6,6 +6,7 @@ import { ReviewEntity } from 'src/entity/review.entity';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
+import { DeleteReviewRequest } from '../dto/request/delete-review.request';
 
 @Injectable()
 export class UserService {
@@ -85,16 +86,11 @@ export class UserService {
   }
 
   //리뷰 삭제
-  async reviewDelete(id: number, body) {
+  async reviewDelete(body: DeleteReviewRequest) {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
-    const user: UserEntity = await this.userRepository.findOne({
-      where: { id: id },
-    });
-
     const findReview = await this.reviewRepository.findOneBy({
-      id: body.id,
-      userEntity: user,
+      id: body.reviewId,
     });
 
     const deleteReview = await this.reviewRepository.delete(findReview);

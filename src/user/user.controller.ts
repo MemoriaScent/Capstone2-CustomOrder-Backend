@@ -162,11 +162,10 @@ export class UserController {
     description: '리뷰 정상적으로 삭제되지 않았습니다.',
   })
   async deleteReview(
-    @Headers('id') id: number,
     @Body() deleteReviewDto: DeleteReviewRequest,
     @Res() response: Response,
   ) {
-    const result = await this.userService.reviewDelete(id, deleteReviewDto);
+    const result = await this.userService.reviewDelete(deleteReviewDto);
 
     if (result) {
       return response

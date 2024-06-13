@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
-import { UserEntity } from "./user.entity";
+import { UserEntity } from './user.entity';
 
 @Entity()
 export class ReviewEntity extends DefaultEntity {

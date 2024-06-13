@@ -10,6 +10,7 @@ import { TossEntity } from '../entity/toss.entity';
 import axios from 'axios';
 import { ConfirmPaymentsRequest } from '../dto/request/confirmPaymentsRequest';
 import { DefaultResponseDto } from '../dto/response/default.response';
+import { PaymentRecordEntity } from "../entity/paymentRecord.entity";
 
 @Injectable()
 export class TossService {
@@ -19,6 +20,8 @@ export class TossService {
     private readonly configService: ConfigService,
     @InjectRepository(TossEntity)
     private tossEntityRepository: Repository<TossEntity>,
+    @InjectRepository(PaymentRecordEntity)
+    private readonly paymentRecordRepository: Repository<PaymentRecordEntity>,
     private readonly logger: Logger,
   ) {
     this.secretKey = this.configService.get<string>('TOSS_SECRET_KEY');
@@ -43,14 +46,16 @@ export class TossService {
 
       this.logger.log(`Payments API Requested by ${paymentInfo.email}`);
       // 필요 데이터 저장
-      const payment = new TossEntity();
-      payment.orderId = paymentInfo.orderId;
-      payment.email = paymentInfo.email;
-      payment.paymentType = paymentInfo.paymentType;
-      payment.paymentKey = paymentInfo.paymentKey;
-      payment.amount = paymentInfo.amount;
-      payment.response = response.data;
-      this.tossEntityRepository.save(payment);
+
+      let tossEntity: TossEntity = new TossEntity();
+      tossEntity = response.data;
+
+      const paymentRecord: PaymentRecordEntity = new PaymentRecordEntity();
+      paymentRecord.email = paymentInfo.email;
+      paymentRecord.amount = paymentInfo.amount;
+      paymentRecord.tossEntity = tossEntity;
+
+      this.tossEntityRepository.save(paymentRecord);
 
       responseDto.status = response.status;
       responseDto.data = response.data;

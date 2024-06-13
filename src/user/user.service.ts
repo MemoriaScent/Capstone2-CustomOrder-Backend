@@ -1,26 +1,31 @@
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entity/user.entity';
 import { ReviewEntity } from 'src/entity/review.entity';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { DefaultResponseDto } from '../dto/response/default.response';
-import { DuplicationEmailRequest } from '../dto/request/duplication-email.request';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(ReviewEntity)
-    private reviewRepository: Repository<ReviewEntity>,
-    // @InjectRepository (DeffuserEntity)
-    // private deffuserRepository: Repository<DeffuserEntity>,
+    private readonly reviewRepository: Repository<ReviewEntity>,
+    private readonly logger: Logger,
   ) {}
 
   // 이메일를 이용한 기존 사용자 찾기 - 로그인 확인
   async userFind(body) {
-    const loginState = await this.userRepository.findOne({
+    const loginState: UserEntity = await this.userRepository.findOne({
       where: { email: body },
     });
 
@@ -28,47 +33,48 @@ export class UserService {
   }
 
   // 이메일를 이용한 기존 사용자 찾기 - 회원가입
-  async emailCheck(
-    emailRequest: DuplicationEmailRequest,
-  ): Promise<DefaultResponseDto> {
-    const response: DefaultResponseDto = new DefaultResponseDto();
-
-    const user: UserEntity = await this.userRepository.findOneBy({
-      email: emailRequest.email,
-    });
+  async emailCheck(email: string): Promise<boolean> {
     // 이메일 중복 확인
-    //응답별 data 수정 필요
-    response.status = user ? 409 : 200;
-    return response;
+    const user: UserEntity = await this.userRepository.findOneBy({
+      email,
+    });
+    if (user) throw new ConflictException('이미 사용 중인 이메일입니다.');
+    return true;
   }
 
   //새로운 사용자 등록
-  async create(userDto: CreateUserRequest): Promise<DefaultResponseDto> {
-    const response: DefaultResponseDto = new DefaultResponseDto();
+  async create(userDto: CreateUserRequest): Promise<UserEntity> {
     // 비밀번호 재확인
     if (userDto.pw != userDto.pwCheck) {
-      response.status = 422;
-      response.data = '비밀번호가 일치하지 않습니다';
-
-      return response;
+      throw new UnprocessableEntityException('비밀번호가 일치하지 않습니다');
     }
-    const result: CreateUserRequest = await this.userRepository.save(userDto);
+    //이메일 중복 시 ConflictException이 내부에서 발생
+    await this.emailCheck(userDto.email);
 
-    response.status = result ? 201 : 404;
-    response.data = result ? { token: 'token' } : { message: '오류' };
-    return response;
+    const userEntity: UserEntity = new UserEntity();
+    userEntity.email = userDto.email;
+    userEntity.pw = userDto.pw;
+    userEntity.phone = userDto.phone;
+    userEntity.name = userDto.name;
+    userEntity.location = userDto.location;
+    try {
+      return await this.userRepository.save(userEntity);
+    } catch (e) {
+      this.logger.error(`Create User Error because ${e.name}`);
+      throw new InternalServerErrorException(
+        '[UserCreation] 서버 관리자에게 문의하세요.',
+      );
+    }
   }
 
-  async update(id,userDto){
+  async update(id, userDto) {
     console.log(userDto);
-    const user= await this.userRepository.update(id,userDto);
+    const user = await this.userRepository.update(id, userDto);
     console.log(user);
     return user;
-
   }
 
-
-  // 리뷰 작성
+  // 리뷰 작성 ==> ????
   async reviewPost(body) {
     const res: DefaultResponseDto = new DefaultResponseDto();
 
@@ -80,7 +86,7 @@ export class UserService {
     return res;
   }
 
-  //리뷰 삭제
+  //리뷰 삭제 ==> ????
   async reviewDelete(body) {
     const response: DefaultResponseDto = new DefaultResponseDto();
 
@@ -97,5 +103,10 @@ export class UserService {
       : { message: '오류' };
 
     return response;
+  }
+  async userinfo(id): Promise<UserEntity> {
+    const result = await this.userRepository.findOneBy(id);
+    if (!result) throw new NotFoundException('존재하지 않는 사용자입니다.');
+    return result;
   }
 }

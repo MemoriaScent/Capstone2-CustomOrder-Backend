@@ -141,7 +141,9 @@ export class UserController {
     }
     throw new ForbiddenException('리뷰가 정상적으로 작성되지 않았습니다.');
   }
-  
+
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Delete('/review')
   @ApiOperation({
     summary: '리뷰 삭제',

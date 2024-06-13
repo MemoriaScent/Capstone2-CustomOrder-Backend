@@ -41,6 +41,7 @@ export class TossService {
         },
       );
 
+      this.logger.log(`Payments API Requested by ${paymentInfo.email}`);
       // 필요 데이터 저장
       const payment = new TossEntity();
       payment.orderId = paymentInfo.orderId;

@@ -10,6 +10,7 @@ import { AddReviewRequest } from 'src/dto/request/add-review.request';
 import { DeleteReviewRequest } from 'src/dto/request/delete-review.request';
 import { UserEntity } from 'src/entity/user.entity';
 import { TokenRequest } from 'src/dto/request/token.request';
+import { UpdateUserRequest } from 'src/dto/request/update-user.request';
 
 @ApiTags('사용자 API')
 @Controller('user')
@@ -79,15 +80,16 @@ export class UserController {
   @ApiOperation({ summary: '개인 정보 수정', description: '사용자의 개인 정보를 수정합니다' })
   @ApiResponse({ status: 200, description: '회원 정보 수정에 성공했습니다.' })
   @ApiResponse({ status: 404, description: '회원 정보가 수정되지 않았습니다' })
-  async updateUser(@Body() userDto: UserEntity, @Res() response:Response){
-    const id = await this.userService.userFind(userDto.email);
+  async updateUser(@Body() userDto:UpdateUserRequest, @Res() response:Response){
 
-    const user = await this.userService.update(id,userDto);
-
-    if(user){
-      return response.status(201).json({ message: '회원 정보 수정에 성공했습니다.'});
+    const uservali = await this.authService.tokenValidate(userDto.token)
+    if(uservali){
+      const id = await this.userService.userFind(userDto.email);
+      const user = await this.userService.update(id,userDto);
+      if(user){
+        return response.status(201).json({ message: '회원 정보 수정에 성공했습니다.'});
+      }
     }
-
     throw new ForbiddenException('회원 정보가 수정되지 않았습니다')
 
   }

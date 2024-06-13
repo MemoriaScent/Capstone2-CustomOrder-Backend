@@ -11,7 +11,7 @@ import {
   HttpCode,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UserService } from './user.service';
 import { CreateUserRequest } from '../dto/request/create-user.request';
 import { Response } from 'express';
@@ -55,21 +55,8 @@ export class UserController {
     throw new UnprocessableEntityException('비밀번호가 일치하지 않습니다');
   }
 
-  @Post('/duplication')
-  @ApiOperation({
-    summary: '이메일 중복 확인',
-    description: '중복 사용된 이메일이 없는지 확인합니다',
-  })
-  @ApiResponse({ status: 200, description: '유효한 사용자 이메일입니다.' })
-  @ApiResponse({ status: 409, description: '이미 사용 중인 이메일입니다.' })
-  @HttpCode(200)
-  async emailDuplication(@Body() email: DuplicationEmailRequest) {
-    //DB에 저장된 사용자 데이터와 email 비교
-    await this.userService.emailCheck(email.email);
-    return '유효한 사용자 이메일입니다';
-  }
-
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get('/myaccount')
   @ApiOperation({
     summary: '개인 정보 확인',
@@ -90,6 +77,22 @@ export class UserController {
     return await this.userService.userinfo(id);
   }
 
+  @Post('/duplication')
+  @ApiOperation({
+    summary: '이메일 중복 확인',
+    description: '중복 사용된 이메일이 없는지 확인합니다',
+  })
+  @ApiResponse({ status: 200, description: '유효한 사용자 이메일입니다.' })
+  @ApiResponse({ status: 409, description: '이미 사용 중인 이메일입니다.' })
+  @HttpCode(200)
+  async emailDuplication(@Body() email: DuplicationEmailRequest) {
+    //DB에 저장된 사용자 데이터와 email 비교
+    await this.userService.emailCheck(email.email);
+    return '유효한 사용자 이메일입니다';
+  }
+
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Post('/update')
   @ApiOperation({
     summary: '개인 정보 수정',
@@ -114,6 +117,8 @@ export class UserController {
     throw new ForbiddenException('회원 정보가 수정되지 않았습니다');
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Post('/review')
   @ApiOperation({
     summary: '리뷰 작성',
@@ -137,6 +142,8 @@ export class UserController {
     throw new ForbiddenException('리뷰가 정상적으로 작성되지 않았습니다.');
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Delete('/review')
   @ApiOperation({
     summary: '리뷰 삭제',

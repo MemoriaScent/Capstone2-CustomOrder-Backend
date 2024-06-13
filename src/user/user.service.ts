@@ -106,9 +106,8 @@ export class UserService {
     return res;
   }
 
-  //리뷰 삭제
+  //리뷰 삭제 ==> ????
   async reviewDelete(body: DeleteReviewRequest) {
-    //리뷰 삭제 ==> ????
     const response: DefaultResponseDto = new DefaultResponseDto();
 
     const findReview = await this.reviewRepository.findOneBy({

@@ -6,6 +6,7 @@ import { DiffuserEntity } from 'src/entity/diffuser.entity';
 import { CustomDeffuserEntity } from 'src/entity/customDeffuser.entity';
 import { UserEntity } from 'src/entity/user.entity';
 import { ReviewEntity } from 'src/entity/review.entity';
+import { JwtService } from "@nestjs/jwt";
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { ReviewEntity } from 'src/entity/review.entity';
     ]),
   ],
   controllers: [DiffuserController],
-  providers: [DiffuserService, Logger],
+  providers: [DiffuserService, Logger, JwtService],
   exports: [TypeOrmModule, Logger],
 })
 export class DiffuserModule {}

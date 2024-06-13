@@ -19,6 +19,7 @@ import { OrderCancelEntity } from './entity/orderCancel.entity';
 import { TossModule } from './pay/toss.module';
 import { TossEntity } from './entity/toss.entity';
 import { PaymentRecordEntity } from "./entity/paymentRecord.entity";
+import { JwtService } from "@nestjs/jwt";
 
 //import process from 'process';
 
@@ -57,7 +58,7 @@ import { PaymentRecordEntity } from "./entity/paymentRecord.entity";
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, Logger],
+  providers: [AppService, Logger, JwtService],
   exports: [Logger],
 })
 export class AppModule {}

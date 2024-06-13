@@ -9,7 +9,6 @@ export class AuthService {
   getAccessToken({ user }): string {
     return this.jwtService.sign(
       {
-        email: user.email,
         sub: user.id,
       },
       {
@@ -18,12 +17,9 @@ export class AuthService {
       },
     );
   }
-  
-  async tokenValidate(token){
-    console.log(token)
-    const id = await this.jwtService.decode(token.token);
-    console.log(id.email)
 
+  async tokenValidate(token) {
+    const id = await this.jwtService.decode(token.token);
     return id.email;
   }
 }

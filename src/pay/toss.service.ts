@@ -11,6 +11,7 @@ import axios from 'axios';
 import { ConfirmPaymentsRequest } from '../dto/request/confirmPaymentsRequest';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { PaymentRecordEntity } from "../entity/paymentRecord.entity";
+import { UserEntity } from "../entity/user.entity";
 
 @Injectable()
 export class TossService {
@@ -22,6 +23,8 @@ export class TossService {
     private tossEntityRepository: Repository<TossEntity>,
     @InjectRepository(PaymentRecordEntity)
     private readonly paymentRecordRepository: Repository<PaymentRecordEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userEntityRepository: Repository<UserEntity>,
     private readonly logger: Logger,
   ) {
     this.secretKey = this.configService.get<string>('TOSS_SECRET_KEY');
@@ -53,7 +56,10 @@ export class TossService {
 
       const paymentRecord: PaymentRecordEntity = new PaymentRecordEntity();
 
-      paymentRecord.email = id;
+      const userEntity: UserEntity = await this.userEntityRepository.findOne({
+        where: { id: id },
+      });
+      paymentRecord.email = userEntity.email;
       paymentRecord.amount = paymentInfo.amount;
       paymentRecord.tossEntity = tossEntity;
 

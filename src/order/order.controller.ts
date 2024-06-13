@@ -38,8 +38,8 @@ export class OrderController {
 
   @Get('')
   @ApiOperation({ summary: '주문 조회', description: '주문을 조회합니다.' })
-  @ApiResponse({ status: 200, description: '주문 조회에 성공했습니다.' })
-  @ApiResponse({ status: 404, description: '주문 조회에 실패했습니다.' })
+  @ApiResponse({ status: 200, description: '주문한 내역이 존재합니다.' })
+  @ApiResponse({ status: 204, description: '주문한 내역이 없습니다.' })
   async read(@Body() idRequest: IdRequest, @Res() res: Response) {
     const response: DefaultResponseDto =
       await this.orderService.read(idRequest);
@@ -52,11 +52,6 @@ export class OrderController {
     description: '주문을 상세하게 조회합니다.',
   })
   @ApiResponse({ status: 200, description: '주문 상세 조회에 성공했습니다.' })
-  @ApiResponse({ status: 404, description: '주문 번호가 잘못되었습니다.' })
-  @ApiResponse({
-    status: 403,
-    description: '해당 내역을 주문한 회원이 아닙니다.',
-  })
   @ApiResponse({ status: 404, description: '주문 상세 조회에 실패했습니다.' })
   async readDetail(
     @Body() readOrderDetailRequest: ReadOrderDetailRequest,
@@ -80,12 +75,5 @@ export class OrderController {
     @Body() createOrderCancelRequest: CreateOrderCancelRequest,
   ) {
     return this.orderService.orderCancel(createOrderCancelRequest);
-  }
-
-  @Get('/pay')
-  async readPay(@Body() emailRequest: IdRequest, @Res() res: Response) {
-    const response: DefaultResponseDto =
-      await this.orderService.read(emailRequest);
-    return res.status(response.status).json(response.data);
   }
 }

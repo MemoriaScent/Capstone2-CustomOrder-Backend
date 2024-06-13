@@ -18,8 +18,15 @@ export class TossController {
     summary: '결제 승인',
     description: '주문을 생성합니다.',
   })
-  @ApiResponse({ status: 200, description: '결제 승인 요청이 성공적으로 처리되었습니다.' })
-  @ApiResponse({ status: 0, description: '"https://docs.tosspayments.com/reference/error-codes#%EA%B2%B0%EC%A0%9C-%EC%8A%B9%EC%9D%B8" 사이트 참고.' })
+  @ApiResponse({
+    status: 200,
+    description: '결제 승인 요청이 성공적으로 처리되었습니다.',
+  })
+  @ApiResponse({
+    status: 0,
+    description:
+      '"https://docs.tosspayments.com/reference/error-codes#%EA%B2%B0%EC%A0%9C-%EC%8A%B9%EC%9D%B8" 사이트 참고.',
+  })
   async confirmPayment(
     @Body() paymentInfo: ConfirmPaymentsRequest,
     @Res() res: Response,

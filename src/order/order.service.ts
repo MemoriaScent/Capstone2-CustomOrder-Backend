@@ -105,8 +105,7 @@ export class OrderService {
       response.status = 200;
       response.data = result;
     } else {
-      response.status = 400;
-      response.data = { msg: '주문한 내역이 없습니다.' };
+      response.status = 204;
     }
     return response;
   }

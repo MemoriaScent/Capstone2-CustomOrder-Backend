@@ -52,6 +52,8 @@ export class TossService {
       payment.response = response.data;
       this.tossEntityRepository.save(payment);
 
+      responseDto.status = response.status;
+      responseDto.data = response.data;
       return responseDto;
     } catch (e) {
       if (e.name === 'AxiosError') {

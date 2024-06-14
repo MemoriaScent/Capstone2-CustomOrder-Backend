@@ -101,19 +101,16 @@ export class UserController {
   @ApiResponse({ status: 200, description: '회원 정보 수정에 성공했습니다.' })
   @ApiResponse({ status: 404, description: '회원 정보가 수정되지 않았습니다' })
   async updateUser(
+    @Headers('id') id: number,
     @Body() userDto: UpdateUserRequest,
     @Res() response: Response,
   ) {
-    const uservali = await this.authService.tokenValidate(userDto.token);
-    if (uservali) {
-      const id = await this.userService.userFind(userDto.email);
-      const user = await this.userService.update(id, userDto);
+      const user = await this.userService.update(userDto);
       if (user) {
         return response
           .status(201)
           .json({ message: '회원 정보 수정에 성공했습니다.' });
       }
-    }
     throw new ForbiddenException('회원 정보가 수정되지 않았습니다');
   }
 

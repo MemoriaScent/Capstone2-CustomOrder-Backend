@@ -105,7 +105,7 @@ export class UserController {
     @Body() userDto: UpdateUserRequest,
     @Res() response: Response,
   ) {
-      const user = await this.userService.update(userDto);
+      const user = await this.userService.update(id,userDto);
       if (user) {
         return response
           .status(201)

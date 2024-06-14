@@ -1,4 +1,5 @@
 import {
+  flatten,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -48,7 +49,7 @@ export class TossService {
           },
         },
       );
-
+      this.logger.debug(response.data);
       this.logger.log(`Payments API Requested by ${id}`);
       // 필요 데이터 저장
 
@@ -60,11 +61,11 @@ export class TossService {
       const userEntity: UserEntity = await this.userEntityRepository.findOne({
         where: { id: id },
       });
-      paymentRecord.email = userEntity.email;
-      paymentRecord.amount = paymentInfo.amount;
+      paymentRecord.userEntity = userEntity;
       paymentRecord.tossEntity = tossEntity;
 
-      this.tossEntityRepository.save(paymentRecord);
+      await this.tossEntityRepository.save(tossEntity);
+      await this.paymentRecordRepository.save(paymentRecord);
 
       responseDto.status = response.status;
       responseDto.data = response.data;
@@ -78,6 +79,10 @@ export class TossService {
         responseDto.data = e.response.data;
         return responseDto;
       }
+      this.logger.debug(e.name);
+      if (e.name === 'QueryFailedError') {
+        this.logger.log(`QueryFailedError Error : ${e}`);
+      }
       throw new InternalServerErrorException('서버 관리자에게 문의하십시오.');
     }
   }
@@ -85,27 +90,35 @@ export class TossService {
   // 결제 조회 요청
   async paymentsUser(id: number) {
     const responseDto = new DefaultResponseDto();
-
     try {
-      const user: UserEntity = await this.userEntityRepository.findOne({
-        where: { id: id },
-      });
-
-      const paymentRecordEntity: PaymentRecordEntity =
-        await this.paymentRecordRepository.findOne({
-          where: { email: user.email },
+      const paymentRecordEntity: PaymentRecordEntity[] =
+        await this.paymentRecordRepository.find({
+          relations: {
+            tossEntity: true,
+            userEntity: true,
+          },
+          select: {
+            userEntity: {
+              id: false,
+              email: false,
+              pw: false,
+              name: false,
+              phone: false,
+              location: false,
+            },
+          },
+          where: {
+            userEntity: {
+              id,
+            },
+          },
         });
-
+      responseDto.status = 200;
       responseDto.data = paymentRecordEntity;
+      return responseDto;
     } catch (e) {
-      if (e.name === 'AxiosError') {
-        this.logger.log(
-          `TossPayment Error : ${e.response.data.code} (at ${id})`,
-        );
-        responseDto.status = e.response.status;
-        responseDto.data = e.response.data;
-        return responseDto;
-      }
+      //결제 내역이 없는 경우는 어캄?
+      this.logger.error(`Error At ${e}`);
       throw new InternalServerErrorException('서버 관리자에게 문의하십시오.');
     }
   }

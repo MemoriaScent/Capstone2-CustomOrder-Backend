@@ -1,23 +1,18 @@
 import { DefaultEntity } from './default.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { TossEntity } from './toss.entity';
+import { UserEntity } from './user.entity';
 
 @Entity()
 export class PaymentRecordEntity extends DefaultEntity {
   @ApiProperty({
-    example: '000001',
-    description: '사용자 이메일',
+    example: '1',
+    description: '사용자 고유번호',
   })
-  @Column()
-  email: string;
-
-  @ApiProperty({
-    example: '70000',
-    description: '결제 금액',
-  })
-  @Column('decimal')
-  amount: number;
+  @ManyToOne(() => UserEntity, (u: UserEntity) => u.id)
+  @JoinColumn()
+  userEntity: UserEntity;
 
   @ApiProperty()
   @OneToOne(() => TossEntity, (e: TossEntity) => e.id)

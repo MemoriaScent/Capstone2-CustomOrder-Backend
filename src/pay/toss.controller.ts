@@ -54,6 +54,9 @@ export class TossController {
       id,
       paymentInfo,
     );
+
+    this.logger.warn(paymentInfo);
+
     return res.status(result.status).json(result.data);
   }
 

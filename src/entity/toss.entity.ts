@@ -121,7 +121,7 @@ export class TossEntity extends DefaultEntity {
       "결제 승인이 일어난 날짜와 시간 정보입니다. yyyy-MM-dd'T'HH:mm:ss±hh:mm ISO 8601 형식입니다.",
   })
   @Column()
-  approvedAt: number;
+  approvedAt: string;
 
   @ApiProperty({
     example: '',

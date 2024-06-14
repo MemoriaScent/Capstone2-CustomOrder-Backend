@@ -7,7 +7,7 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
-    origin: ['http://mskiosk.swdev.kr', 'http://localhost:3000'],
+    origin: ['*'],
     credentials: true,
   });
   const config = new DocumentBuilder()

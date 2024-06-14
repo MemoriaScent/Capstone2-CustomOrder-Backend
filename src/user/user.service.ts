@@ -124,7 +124,11 @@ export class UserService {
     return response;
   }
   async userinfo(id): Promise<UserEntity> {
-    const result = await this.userRepository.findOneBy(id);
+    const result = await this.userRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
     if (!result) throw new NotFoundException('존재하지 않는 사용자입니다.');
     return result;
   }

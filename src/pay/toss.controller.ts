@@ -15,7 +15,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TossService } from './toss.service';
-import { requestPaymentRequest } from '../dto/request/request-payment.request';
+import { confirmPaymentRequest } from '../dto/request/confirm-payment.request';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { ViewPaymentsRequest } from '../dto/request/view-payments.request';
@@ -47,7 +47,7 @@ export class TossController {
   })
   async paymentsConfirm(
     @Headers('id') id: number,
-    @Body() paymentInfo: requestPaymentRequest,
+    @Body() paymentInfo: confirmPaymentRequest,
     @Res() res: Response,
   ): Promise<Response> {
     const result: DefaultResponseDto = await this.tossService.paymentsConfirm(

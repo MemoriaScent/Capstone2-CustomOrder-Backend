@@ -1,5 +1,4 @@
 import {
-  flatten,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -9,11 +8,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TossEntity } from '../entity/toss.entity';
 import axios from 'axios';
-import { requestPaymentRequest } from '../dto/request/requestPaymentRequest';
+import { confirmPaymentRequest } from '../dto/request/confirm-payment.request';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { PaymentRecordEntity } from '../entity/paymentRecord.entity';
 import { UserEntity } from '../entity/user.entity';
-import { ViewPaymentsRequest } from '../dto/request/viewPayments.request';
+import { ViewPaymentsRequest } from '../dto/request/view-payments.request';
 
 @Injectable()
 export class TossService {
@@ -33,7 +32,7 @@ export class TossService {
   }
 
   // 결제 승인 요청
-  async paymentsConfirm(id: number, paymentInfo: requestPaymentRequest) {
+  async paymentsConfirm(id: number, paymentInfo: confirmPaymentRequest) {
     const responseDto = new DefaultResponseDto();
     const encryptedSecretKey =
       'Basic ' + Buffer.from(this.secretKey + ':').toString('base64');

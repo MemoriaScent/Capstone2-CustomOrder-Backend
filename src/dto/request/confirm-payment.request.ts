@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsString } from 'class-validator';
 
-export class requestPaymentRequest {
+export class confirmPaymentRequest {
   @ApiProperty({
     example: 'MC41NTI5ODE3MTI1MTE4',
     description: '주문 번호',

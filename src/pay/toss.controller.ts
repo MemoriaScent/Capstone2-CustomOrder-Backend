@@ -15,10 +15,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TossService } from './toss.service';
-import { requestPaymentRequest } from '../dto/request/requestPaymentRequest';
+import { requestPaymentRequest } from '../dto/request/request-payment.request';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
-import { ViewPaymentsRequest } from '../dto/request/viewPayments.request';
+import { ViewPaymentsRequest } from '../dto/request/view-payments.request';
 import { AuthGuard } from '../auth/auth.guard';
 
 @ApiTags('토스페이먼츠 API')

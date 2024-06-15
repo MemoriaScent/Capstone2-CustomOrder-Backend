@@ -12,7 +12,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { DefaultResponseDto } from '../dto/response/default.response';
 import { CartService } from './cart.service';
-import { CreateCartRequest } from '../dto/request/createCart.request';
+import { CreateCartRequest } from '../dto/request/create-cart.request';
 import { AuthGuard } from '../auth/auth.guard';
 
 @ApiTags('장바구니 API')

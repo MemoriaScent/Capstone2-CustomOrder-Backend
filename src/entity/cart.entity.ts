@@ -1,5 +1,5 @@
 // 장바구니 엔티티
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { DefaultEntity } from './default.entity';
 import { UserEntity } from './user.entity';
@@ -7,7 +7,7 @@ import { DiffuserEntity } from './diffuser.entity';
 
 @Entity()
 export class CartEntity extends DefaultEntity {
-  @ManyToOne(() => DiffuserEntity, (diffuser) => diffuser.id)
+  @ManyToOne(() => DiffuserEntity, (diffuser: DiffuserEntity) => diffuser.id)
   @JoinColumn()
   diffuserId: DiffuserEntity;
 

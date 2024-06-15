@@ -3,7 +3,7 @@ import { IsInt, IsString } from 'class-validator';
 
 export class requestPaymentRequest {
   @ApiProperty({
-    example: 'QWERTY',
+    example: 'MC41NTI5ODE3MTI1MTE4',
     description: '주문 번호',
   })
   @IsString()
@@ -18,7 +18,7 @@ export class requestPaymentRequest {
   paymentType: string;
 
   @ApiProperty({
-    example: 'qwertyuiop',
+    example: 'tgen_20240614024117t7cV9',
     description: '결제 키 값. 최대 200자. 결제 식별 역할. 고유 값.',
   })
   @IsString()

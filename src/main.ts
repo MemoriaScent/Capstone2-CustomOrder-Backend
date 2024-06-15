@@ -3,11 +3,12 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder, OpenAPIObject } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
-    origin: ['http://mskiosk.swdev.kr', 'http://localhost:3000'],
+    origin: true,
     credentials: true,
   });
   const config = new DocumentBuilder()
@@ -22,6 +23,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.use(helmet( { contentSecurityPolicy: false } ));
 
   await app.listen(3000);
 }
